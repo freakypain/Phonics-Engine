@@ -5,16 +5,18 @@
 
 class Ray
 {
-public:
-	Ray();
-	Ray( Vector3& origin, Vector );
+	public:
+		Ray();
+		Ray( const Vector3& origin, const Vector3& direction );
+		~Ray() = default;
 
-	Vector3& getOrigin		{ return mOrigin    };
-	Vector3& getDirection	{ return mDirection };
 
-private:
-	Vector3 mOrigin;
-	Vector3 mDirection;
+		Vector3& getOrigin()	{ return mOrigin;    };
+		Vector3& getDirection()	{ return mDirection; };
+
+	private:
+		Vector3 mOrigin;
+		Vector3 mDirection;
 };
 
 #endif // RAY_H
