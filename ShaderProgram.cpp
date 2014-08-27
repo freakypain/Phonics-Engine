@@ -1,15 +1,12 @@
 #include "ShaderProgram.hpp"
-
-#include <iostream>
-#include <fstream>
-
+#include "GameObject.hpp"
 #include "Texture.hpp"
-#include <map>
-#include <gl\GL.h>
+
 
 ShaderProgram::ShaderProgram( const char * vertexFileName, const char * fragmentFileName, const char * geometryFileName )
 {
-	(geometryFileName != NULL) ? load( vertexFileName, fragmentFileName ) : load( vertexFileName, fragmentFileName, geometryFileName );
+	// TODO Fix loading geomtrry file
+	//(geometryFileName != 0) ? load( vertexFileName, fragmentFileName ) : load( vertexFileName, fragmentFileName, geometryFileName );
 }
 
 ShaderProgram::~ShaderProgram()

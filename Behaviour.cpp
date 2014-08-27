@@ -1,5 +1,5 @@
-#include <cassert>
 #include <iostream>
+#include <cassert>
 #include "Behaviour.hpp"
 
 Behaviour::Behaviour( GameObject * aParent ) :	parent( aParent )

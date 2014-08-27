@@ -1,8 +1,11 @@
 #ifndef MESH_H
 #define MESH_H
+
+#include <Windows.h>
+#include <iostream>
 #include <vector>
-#include <gl/GL.h>
-#include "glm.hpp"
+#include <gtc\matrix_transform.hpp>
+#include <gl\GL.h>
 
 class Renderer;
 

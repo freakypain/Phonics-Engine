@@ -1,6 +1,7 @@
 #ifndef RENDERPOINT_H
 #define RENDERPOINT_H
 
+#include <Windows.h>
 #include "stdafx.h"
 
 class RenderPoint

@@ -17,12 +17,13 @@ Spotlight::~Spotlight()
 
 }
 
+// TODO Fix spotlight
 void Spotlight::draw(Renderer * aRenderer, glm::mat4 aParentTransform)
 {
 
     //std::cout << "Draw Spot Light: " <<  aRenderer->getShaderProgram()->id << std::endl;
 
-
+	/*
     aRenderer->getShaderProgram()->setUniform("material_ambient", 0.2f, 0.2f, 0.2f, 1.0f);
     aRenderer->getShaderProgram()->setUniform("material_diffuse", 0.0f, 1.0f, 0.3f, 1.0f);
     aRenderer->getShaderProgram()->setUniform("material_specular", 1.0f, 1.0f, 0.0f, 1.0f);
@@ -67,6 +68,6 @@ void Spotlight::draw(Renderer * aRenderer, glm::mat4 aParentTransform)
 
 
 
-    }
+    }*/
 }
 

@@ -1,16 +1,16 @@
-#include <iostream>
-#include <cmath>
-#include <SFML/Window.hpp>
+// TODO Fix WASDBehaviour
+
+#include "../stdafx.h"
 
 #include "WASDBehaviour.hpp"
-#include "../glm.hpp"
 #include "../GameObject.hpp"
 
-WASDBehaviour::WASDBehaviour( GameObject * aParent, sf::Window * aWindow ):	Behaviour( aParent ), window( aWindow ){}
+WASDBehaviour::WASDBehaviour( GameObject * aParent ):	Behaviour( aParent ) {}
 WASDBehaviour::~WASDBehaviour(){}
 
 void WASDBehaviour::update( float step )
 {
+	/*
 
 	glm::ivec2 windowCenter = glm::ivec2( window->getSize().x/2, window->getSize().y/2 );
 	glm::ivec2 mousePosition = glm::ivec2( sf::Mouse::getPosition( *window ).x, sf::Mouse::getPosition( *window ).y );
@@ -31,7 +31,7 @@ void WASDBehaviour::update( float step )
 	}
 	if ( sf::Keyboard::isKeyPressed( sf::Keyboard::D )) {
 		parent->translate( glm::vec3( step * 60, 0.0f, 0.0f ) );
-	}
+	}*/
 
 	//std::cout << turnHorizontal << std::endl;
 }

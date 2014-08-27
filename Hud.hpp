@@ -1,18 +1,19 @@
 #ifndef HUD_H
 #define HUD_H
 
-#include <SFML/Graphics.hpp>
+class RenderPoint;
 
 class Hud
 {
 	private:
-		sf::RenderWindow * window;
-		sf::Font font;
-		sf::Texture marvinTex;
-		sf::Sprite marvin;
+		//sf::RenderWindow * window;
+		//sf::Font font;
+		//sf::Texture marvinTex;
+		//sf::Sprite marvin;
 	public:
-		Hud( sf::RenderWindow * aWindow );
-		virtual ~Hud();
+		//Hud( sf::RenderWindow * aWindow );
+		Hud( RenderPoint * renderer );
+		virtual ~Hud( );
 		void draw( );
 };
 

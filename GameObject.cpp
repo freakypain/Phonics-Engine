@@ -1,6 +1,3 @@
-#include <cassert>
-#include <iostream>
-
 #include "Renderer.hpp"
 #include "GameObject.hpp"
 #include "Behaviour.hpp"
@@ -11,9 +8,16 @@
 #include "ShaderProgram.hpp"
 #include "Light.hpp"
 
-GameObject::GameObject( std::string aName, glm::vec3 aPosition )
-:	name( aName ), transform( glm::translate( aPosition ) ), behaviour( NULL ), collider(NULL), mesh( NULL ), tex0( NULL ), tex1( NULL ), tex2( NULL ), tex3( NULL ), shader(NULL), light(NULL), totalSprite(0), startTime(0.0f), currentSprite(0) // initialisation list
+// TODO Fix GameObject missing allot of options
+
+
+GameObject::GameObject(std::string aName, glm::vec3 aPosition) : 
+																name(aName), transform(glm::translate(glm::mat4(1.0f), aPosition)), 
+																behaviour(NULL), collider(NULL), mesh(NULL), 
+																texture(NULL), shader(NULL),
+																light(NULL)
 {
+
 }
 
 GameObject::~GameObject()
@@ -21,19 +25,26 @@ GameObject::~GameObject()
 	//dtor
 }
 
+
 void GameObject::translate(glm::vec3 translation)
 {
+	
 	transform = glm::translate( transform, translation );
+
 }
+
 
 void GameObject::setTransform(glm::mat4 aTransform)
 {
     transform = aTransform;
 }
 
+
 void GameObject::setLocation(glm::vec3 aLocation)
 {
-   transform = glm::translate(transform[3][aLocation.x], transform[3][aLocation.y], transform[3][aLocation.z] );
+	// TODO fix the glm translate
+	//transform = glm::translate(transform, glm::vec3(transform[3][aLocation.x], transform[3][aLocation.y], transform[3][aLocation.z]));
+	transform = glm::translate(glm::mat4(1.0f), glm::vec3(transform[3][aLocation.x], transform[3][aLocation.y], transform[3][aLocation.z]));
 }
 
 glm::vec3 GameObject::getDirection()
@@ -41,10 +52,12 @@ glm::vec3 GameObject::getDirection()
     return glm::vec3(transform[2]); // z axis return
 }
 
+
 void GameObject::rotate( float angle, glm::vec3 axis )
 {
 	transform = glm::rotate( transform, angle, axis);
 }
+
 
 const std::string GameObject::getName()
 {
@@ -58,19 +71,19 @@ glm::vec3 GameObject::getLocation()
 
 void GameObject::setBehaviour( Behaviour * aBehaviour )
 {
-	assert( aBehaviour != NULL );
+	assert( aBehaviour != 0 );
 	behaviour = aBehaviour;
 }
 
 void GameObject::setShader(ShaderProgram * aShader)
 {
-    assert(aShader != NULL);
+    assert(aShader != 0);
     shader = aShader;
 }
 
 bool GameObject::hasCollider()
 {
-    if(collider != NULL) return true;
+    if(collider != 0) return true;
 
     return false;
 }
@@ -81,12 +94,12 @@ Collider * GameObject::getCollider(){
 
 void GameObject::setCollider(Collider *aCollider)
 {
-    assert( aCollider != NULL );
+    assert( aCollider != 0 );
 	collider = aCollider;
 }
 
 void GameObject::removeCollider(){
-    collider = NULL;
+    collider = 0;
 }
 
 Behaviour * GameObject::getBehaviour(){
@@ -94,7 +107,7 @@ Behaviour * GameObject::getBehaviour(){
 }
 
 void GameObject::removeBehaviour(){
-    behaviour = NULL;
+    behaviour = 0;
 }
 
 Mesh * GameObject::getMesh(){
@@ -103,21 +116,21 @@ Mesh * GameObject::getMesh(){
 
 void GameObject::setMesh( Mesh * aMesh )
 {
-	assert( aMesh != NULL );
+	assert( aMesh != 0 );
 	mesh = aMesh;
 }
 
 void GameObject::setTexture0( Texture * aTex )
 {
-	assert( aTex != NULL );
+	assert( aTex != 0 );
 	assert( aTex->getId() > 0 );
-	tex0 = aTex;
+	texture = aTex;
 }
 
 void GameObject::setLight(Light * aLight, ShaderProgram * aShader)
 {
-    assert(aLight != NULL);
-    assert(aShader != NULL);
+    assert(aLight != 0);
+    assert(aShader != 0);
     light = aLight;
     shader = aShader;
 }
@@ -134,12 +147,11 @@ void GameObject::update( float step )
 	}
 
 	float time = Time::now();
+
 	if (time - startTime >= 0.05f ) {
 		startTime = time;
-        if(currentSprite >= 1){
-            (currentSprite >= totalSprite) ? currentSprite = 1 : currentSprite ++;
-        }
 	}
+
 	for ( size_t i = 0; i < children.size(); ++i ) {
 		children[i]->update( step );
 	}
@@ -153,6 +165,12 @@ void GameObject::onCollision(  GameObject * otherGameObject )
 }
 
 
+// TODO fix drawing function game object
+void GameObject::draw(Renderer * aRenderer, glm::mat4 parentTransform)
+{
+
+}
+/*
 void GameObject::draw( Renderer * aRenderer, glm::mat4 parentTransform )
 {
 	assert( aRenderer != NULL );
@@ -179,31 +197,27 @@ void GameObject::draw( Renderer * aRenderer, glm::mat4 parentTransform )
 		mesh->draw( aRenderer );
 	}
 
+	// TODO Fix Drawing from childeren to renderer
 	// draw children
 	for( std::vector< GameObject * >::iterator i = children.begin(); i != children.end(); ++i ) {
 		((GameObject * )*i)->draw( aRenderer, parentTransform * transform );
 	}
-}
+}*/
+
 
 glm::mat4 GameObject::getTransform(){
     return transform;
 }
 
-void GameObject::set2DAnimation(int total)
-{
-    currentSprite = 2;
-    totalSprite = total;
-}
-
 void GameObject::add( GameObject * child )
 {
-	assert( child != NULL );
+	assert( child != 0 );
 	children.push_back( child );
 }
 
-void GameObject::removeChild( GameObject * child)
+void GameObject::removeChild( GameObject * child )
 {
-    assert(child!= NULL);
+    assert(child!= 0);
     try{
         for( std::vector< GameObject * >::iterator it = children.begin(); it != children.end(); it++ )
         {
@@ -211,13 +225,13 @@ void GameObject::removeChild( GameObject * child)
             {
                 ((GameObject *)*it)->removeCollider();
                 ((GameObject *)*it)->removeBehaviour();
-                ((GameObject *)*it)->currentSprite = 0;
-                ((GameObject *)*it)->setMesh(NULL);
+                ((GameObject *)*it)->setMesh(0);
             }
         }
-    }catch( std::string e ){
-                std::cout<<e<<std::endl;
-            }
+    }
+	catch( std::string e ){
+		std::cout<<e<<std::endl;
+    }
 }
 // private functions
 

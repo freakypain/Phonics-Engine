@@ -1,12 +1,12 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
+#include <Windows.h>
+#include <gl\GL.h>
+#include <glm.hpp>
+
 #include "RenderPoint.hpp"
 #include "Ray.hpp"
-#include "stdafx.h"
-
-#include <gl\GL.h>
-
 
 class ShaderProgram;
 class Texture;
@@ -28,18 +28,17 @@ class Renderer
 		
 	private:
 		// shader input locations
-		GLuint projectionLoc, viewLoc, modelLoc, lightLoc, timeLoc, animationLoc, spriteWidthLoc; 	// uniform locations
-		GLuint verticesLoc, normalsLoc, textureLoc;		// attribute locations
-		GLuint tex0Loc;
+		//GLuint projectionLoc, viewLoc, modelLoc, lightLoc, timeLoc, animationLoc, spriteWidthLoc; 	// uniform locations
+		//GLuint verticesLoc, normalsLoc, textureLoc;		// attribute locations
+		//GLuint tex0Loc;
 
 
 		// buffered variables
 		float time;
 		glm::mat4 projection, view, model;
 		glm::vec3 light;
-		GLuint tex0;
-
-
+		//GLuint tex0;
+		
 
 	public:
 		Renderer( RenderPoint * renderPoint );
@@ -54,14 +53,15 @@ class Renderer
 
 		void setTime( float aTime );
 		void setLight( glm::vec3 aLight );
-		void setTexture0 ( Texture * tex0 );
+		//void setTexture0 ( Texture * tex0 );
+		void initialize();
 
-		//void draw( GameObject * aWorld ); // starting point for drawing
-		//void draw( unsigned int size, GLuint indicesId, GLuint verticesId, GLuint normalsId, GLuint uvsId ); // drawing mesh, all other uniforms etc should be allready available
+		void draw( GameObject * aWorld ); // starting point for drawing
+		void draw( unsigned int size, GLuint indicesId, GLuint verticesId, GLuint normalsId, GLuint uvsId ); // drawing mesh, all other uniforms etc should be allready available
 		bool draw();
-
+		
 	private:
-		void findLocations();
+		//void findLocations();
 };
 
 #endif // RENDERER_H

@@ -1,19 +1,24 @@
-#include <cassert>
+#include <Windows.h>
 #include <iostream>
+#include <cassert>
+#include <cmath>
+#include <glm.hpp>
+
 #include "SphereCollider.hpp"
 #include "../Behaviour.hpp"
 #include "../GameObject.hpp"
 
 
 
-#include <cmath>
 
 
-SphereCollider::SphereCollider( GameObject * aParent, float aRadius )
-:	Collider( aParent ), radius( aRadius )
+
+SphereCollider::SphereCollider( GameObject * aParent, float aRadius ) :	Collider( aParent ), radius( aRadius )
 {
 	//ctor
-	std::cout << parent->getName() << std::endl;
+	//std::cout << parent->getName() << std::endl;
+	// TODO Fix get parents name
+	std::cout << "Parent Name: (Needs to be fixed) " << std::endl;
 }
 
 SphereCollider::~SphereCollider()
@@ -41,12 +46,12 @@ bool SphereCollider::collides( SphereCollider * otherCollider )
     float distance = glm::distance(position, otherPosition);
 
     if(distance < radius + otherCollider->radius){
-            if(parent->getBehaviour() != NULL){
+            if(parent->getBehaviour() != 0){
                 parent->getBehaviour()->onCollision(otherCollider->parent);
                 return true;
             }
     }
-    else if(parent->getBehaviour() != NULL){
+    else if(parent->getBehaviour() != 0){
         parent->getBehaviour()->onCollisionExit(otherCollider->parent);
     }
     return false;

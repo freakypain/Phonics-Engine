@@ -1,28 +1,29 @@
-
 #include "ShaderProgram.hpp"
 #include "Texture.hpp"
 #include "Time.hpp"
-#include <SFML/Graphics.hpp>
-#include <SFML/Graphics/Sprite.hpp>
+
+#include <iostream>
+#include <gl\GL.h> // Afther the Windows.h include
 
 
 std::map< const char *, Texture * > Texture::textures; // for static texturs var
 
-Texture::Texture( const char * aName )
-:	name( aName )
+Texture::Texture( const char * aName ) :	name( aName )
 {
 	//ctor
 }
 
-
+// TODO Fix texture gpu removeal
 Texture::~Texture()
 {
-	glDeleteTextures( 1, &id ); // frees gpu memory
+	//glDeleteTextures( 1, &id ); // free gpu memory
 }
 
-
+// TODO fix texture loading
+/*
 Texture * Texture::load( const char * aName )
 {
+	
 	// check if in cache
 	std::map< const char *, Texture * >::iterator textureIterator = textures.find( aName );
 	if ( textureIterator != textures.end() ) {
@@ -48,14 +49,12 @@ Texture * Texture::load( const char * aName )
 			return texture;
 		} else {
 			std::cout << "Error loading texture image " << aName << std::endl;
-			return NULL;
+			return 0;
 		}
 	}
-}
+}*/
 
 
 GLuint Texture::getId() {
 	return id;
 }
-
-

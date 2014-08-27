@@ -1,10 +1,4 @@
 #include "Mesh.hpp"
-
-#include <iostream>
-#include <map>
-#include <cstring>
-#include <fstream>
-
 #include "Renderer.hpp"
 
 Mesh::Mesh() : indicesBuffer(0), verticesBuffer(0), normalsBuffer(0), uvsBuffer(0)
@@ -23,7 +17,8 @@ unsigned int Mesh::size() {
 
 void Mesh::draw( Renderer * aRenderer )
 {
-	aRenderer->draw( size(), indicesBuffer, verticesBuffer, normalsBuffer, uvsBuffer );
+	// TODO fix mesh drawing
+	//aRenderer->draw( size(), indicesBuffer, verticesBuffer, normalsBuffer, uvsBuffer );
 }
 
 std::vector< glm::vec3 > Mesh::getVertices() {
@@ -31,11 +26,13 @@ std::vector< glm::vec3 > Mesh::getVertices() {
 }
 
 
+// TODO fix mesh loading from file
 // static functions
 // Load obj file with v/vt/vn
+/*
 Mesh * Mesh::load( const char * fileName )
 {
-	assert( fileName != NULL );
+	assert( fileName != 0 );
 	assert( strlen( fileName ) > 0 );
 
 	Mesh * mesh = new Mesh();
@@ -93,7 +90,7 @@ Mesh * Mesh::load( const char * fileName )
 				} else { // something is wrong
 					std::cout << "Error reading obj, needing v,vn,vt" << std::endl;
 					delete mesh; // free the mem from created body
-					return NULL; // no body read
+					return 0; // no body read
 				}
 			}
 		}
@@ -105,10 +102,12 @@ Mesh * Mesh::load( const char * fileName )
 	} else { // file could not be opened;
 		std::cout << "Could not read " << fileName << std::endl;
 		delete mesh;
-		return NULL;
+		return 0;
 	}
-}
+}*/
 
+// TODO fix mesh buffer
+/*
 void Mesh::buffer()
 {
 	// create vertices buffer
@@ -127,8 +126,10 @@ void Mesh::buffer()
 			glBufferData( GL_ARRAY_BUFFER, uvs.size()*sizeof(glm::vec2), &uvs[0][0], GL_STATIC_DRAW );
 		glBindBuffer( GL_ARRAY_BUFFER, 0 ); // important for 2d sfml
 	}
-}
+}*/
 
+// TODO fix unbuffer
+/*
 void Mesh::unBuffer()
 {
 	if ( indicesBuffer ) {
@@ -142,4 +143,4 @@ void Mesh::unBuffer()
 		uvsBuffer= 0;
 		std::cout << "Unbuffering" << std::endl;
 	}
-}
+}*/

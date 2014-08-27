@@ -1,14 +1,13 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
 
-#include <SFML/Graphics.hpp>
-
-#include <iostream>
+#include <glm.hpp>
 #include <map>
-#include <GL/glew.h>
+
 
 class Mesh;
 class ShaderProgram;
+
 
 class Texture
 {
@@ -19,7 +18,8 @@ class Texture
 	private:
 		Texture( const char * aName );
 	public:
-		static Texture * load( const char * aName );
+		// TODO Fix texture Loading
+		//static Texture * load( const char * aName ); 
 		virtual ~Texture();
 		GLuint getId();
 

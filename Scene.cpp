@@ -1,4 +1,7 @@
+#include <iostream>
 #include <cassert>
+
+#include "GameObject.hpp"
 #include "Scene.hpp"
 #include "Camera.hpp"
 #include "Light.hpp"
@@ -14,16 +17,16 @@ Scene::~Scene()
 	//dtor
 }
 
-void Scene::update(float step)
+void Scene::update( float step )
 {
 	//camera->update( step );
 	GameObject::update( step );
 	checkCollision(); // Check Collisions
 }
 
-void Scene::draw(Renderer * renderer)
+void Scene::draw( Renderer * renderer )
 {
-	assert( renderer != NULL );
+	assert( renderer != 0 );
 	GameObject::draw( renderer ); // draw children Engine Objects
 }
 

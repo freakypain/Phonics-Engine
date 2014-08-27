@@ -1,3 +1,8 @@
+// External
+#include <iostream>
+#include <memory>
+#include <cassert>
+
 #include "Time.hpp"
 #include "Hud.hpp"
 #include "Renderer.hpp"
@@ -20,11 +25,10 @@
 // Lights
 #include "Lights/Spotlight.hpp"
 
-// External
-#include <cassert>
 
 
-Engine::Engine() : window(NULL), hud(NULL), renderer(NULL), scene(NULL), camera(NULL), light(NULL)
+
+Engine::Engine() : hud(0), renderer(0), scene(0), camera(0), light(0)
 {
 	//window = new sf::RenderWindow( sf::VideoMode( 800, 600, 32 ), "Santa smash"/*, sf::Style::Fullscreen*/); // get a window
 	//std::cout << "Init Glew" << glewInit() << std::endl;
@@ -46,7 +50,8 @@ void Engine::build()
 	//ShaderProgram * shaderPoint = new ShaderProgram("shaders/pointlight.vert", "shaders/pointLight.frag");
 
 	// Camera
-	camera = new Camera( "Camera", glm::vec3( 30, 40, 25) );
+	//std::unique_ptr<Camera> camera("Camera", glm::vec3(30, 40, 25));
+	//camera = new Camera( "Camera", glm::vec3( 30, 40, 25) );
     //camera->setBehaviour( new WASDBehaviour( camera, window ) );
 
 	// Add to Universe
@@ -72,7 +77,12 @@ void Engine::stop()
 }
 
 // private functions
+// TODO Fix control
+void Engine::control()
+{
 
+}
+/*
 void Engine::control()
 {
 	sf::Event event;
@@ -82,22 +92,24 @@ void Engine::control()
 			running = false; // running = false;
 		}
 	}
-}
+}*/
 
 
 void Engine::update( float step )
 {
-	assert( scene != NULL );
+	assert( scene != 0 );
 	scene->update( step );
 }
 
 void Engine::draw()
 {
-	assert( window != NULL );
-	assert( renderer != NULL );
-	assert( scene != NULL );
+	//assert( window != 0 );
+	assert( renderer != 0 );
+	assert( scene != 0 );
 
-	renderer->draw( scene );
+	//renderer->draw( scene );
 	hud->draw();
-	window->display(); // swap colorbuffer to screen
+
+	// TODO Fix window display renderer 
+	//window->display(); // swap colorbuffer to screen
 }

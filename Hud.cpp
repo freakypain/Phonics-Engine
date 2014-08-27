@@ -1,15 +1,15 @@
 #include <cassert>
-#include <iostream>
-#include <cstdio>
-#include <GL/glew.h>
-#include "FPS.hpp"
+
+//#include "FPS.hpp"
+#include "RenderPoint.hpp"
 #include "Hud.hpp"
 
 
+// TODO Fixing hud display
 
-Hud::Hud( sf::RenderWindow * aWindow ) : window( aWindow )
+Hud::Hud( RenderPoint* renderer ) // : window( aWindow )
 {
-	assert ( window != NULL );
+	assert( renderer != 0 );
 }
 
 Hud::~Hud()
@@ -20,10 +20,10 @@ Hud::~Hud()
 
 void Hud::draw()
 {
-	glDisable( GL_CULL_FACE ); // needed for text, dont know why
+	//glDisable( GL_CULL_FACE ); // needed for text, dont know why
 
 	// Draw it
-	assert ( window != NULL );
-	window->pushGLStates();
-	window->popGLStates();
+	//assert ( window != NULL );
+	//window->pushGLStates();
+	//window->popGLStates();
 }

@@ -2,15 +2,14 @@
 #define SCENE_H
 
 #include "GameObject.hpp"
+
 class Camera;
 class Light;
 
 class Scene : public GameObject
 {
-	private:
-
 	public:
-		Scene(std::string aName = NULL);
+		Scene(std::string aName = 0);
 		virtual ~Scene();
 
 		void update( float step );

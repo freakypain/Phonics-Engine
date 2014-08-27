@@ -1,26 +1,29 @@
 #ifndef SHADERPROGRAM_H
 #define SHADERPROGRAM_H
 
-#include <string>
-#include <vector>
-#include "glm.hpp"
+#include <Windows.h>
 #include <map>
+#include <string>
+#include <gl\GL.h>
+
 
 class Texture;
+class GameObject;
 
 class ShaderProgram
 {
-    protected:
-        GLuint * programID;
+	protected:
+        GLuint* programID;
 
 	public: // var locations
 		GLuint id;
 
 	public: // functions
-		ShaderProgram( const char * vertexFileName, const char * fragmentFileName, const char * geometryFileName = NULL);
+		ShaderProgram( const char * vertexFileName, const char * fragmentFileName, const char * geometryFileName = 0);
 		virtual ~ShaderProgram();
 
-		void load( const char * vertexFileName, const char * fragmentFileName, const char * geometryFileName = NULL ); // loads, compiles and links the shaders
+		/*
+		void load( const char * vertexFileName, const char * fragmentFileName, const char * geometryFileName = 0 ); // loads, compiles and links the shaders
 
 		GLuint getUniformLocation( const char * name );
 		GLuint getAttribLocation(  const char * name  );
@@ -45,8 +48,8 @@ class ShaderProgram
 	private: // functions
 		std::string readFile	( const char * filePath );
 		GLuint compileShader	( GLenum type, std::string & shaderCode );
-		GLuint linkProgram		( GLuint vertexShaderId, GLuint fragmentShaderId, GLuint geometryShaderId = NULL );
-		void getLocations();
+		GLuint linkProgram		( GLuint vertexShaderId, GLuint fragmentShaderId, GLuint geometryShaderId = 0 );
+		void getLocations();*/
 };
 
 #endif // SHADERPROGRAM_H

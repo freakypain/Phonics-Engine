@@ -1,3 +1,5 @@
+#include <Windows.h>
+#include "stdafx.h"
 #include "RenderPoint.hpp"
 
 
@@ -5,6 +7,11 @@ RenderPoint::RenderPoint( int width, int height) : mWidth( width ), mHeight( hei
 {
 	mBuffer = new Pixel[width * height];
 	initializeBitmap();
+}
+
+RenderPoint::~RenderPoint()
+{
+	delete[] mBuffer;
 }
 
 

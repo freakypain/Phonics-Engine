@@ -1,3 +1,9 @@
+// External
+#include <Windows.h>
+#include <gl\GL.h>
+#include <gtc\type_ptr.hpp>
+#include <glm.hpp>
+
 // Internal
 #include "Renderer.hpp"
 #include "ShaderProgram.hpp"
@@ -5,12 +11,9 @@
 #include "Texture.hpp"
 #include "Time.hpp"
 
-// External
-#include <gl\GL.h>
-#include <cassert>
 
 
-Renderer::Renderer( RenderPoint* renderPoint ) :  program( NULL )
+Renderer::Renderer( RenderPoint* renderPoint ) :  program( 0 )
 {
 	mRenderPoint = renderPoint;
 }
@@ -20,11 +23,12 @@ Renderer::~Renderer()
 	delete program;
 }
 
+// TODO Fix set Shaders
 void Renderer::setShader( ShaderProgram * aProgram )
 {
 	program = aProgram;
-	program->use(); // this is the default program
-	findLocations(); // find where to put the uniforms to
+	//program->use(); // this is the default program
+	//findLocations(); // find where to put the uniforms to
 }
 
 void Renderer::setProjection( glm::mat4 aProjection )
@@ -47,11 +51,11 @@ void Renderer::setLight( glm::vec3 aLight )
 	light = aLight; // cache light prosition for positional light
 }
 
+/*
 void Renderer::setTexture0( Texture * aTex ) // for single texture at a time, otherwise use activeTexture
 {
 	tex0 = aTex->getId();
-}
-
+}*/
 
 void Renderer::setTime( float aTime )
 {
@@ -66,17 +70,72 @@ ShaderProgram * Renderer::getShaderProgram()
 bool Renderer::draw()
 {
 	// Render horizontal lines
-	for (int u = nextLine; i < mRenderPoint->getHeight(); y++)
+	for ( int y = mNextLine; y < mRenderPoint->getHeight(); y++ )
 	{
 		// Start interpolating from left side of view plane
 		mCurrentX = mViewPlaneX1;
 
+		// Render pixels on current line
+		for ( int x = 0; x < mRenderPoint->getWidth(); x++ )
+		{
+			// Create ray to current pixel
+			Vector3 direction = Vector3( mCurrentX, mCurrentY, 0 ) - mEyePosition;
+			direction.normalize();
+			Ray ray( mEyePosition, direction );
+
+			// Find the cloesest primitave and its colour
+			// TODO fix pixelcolour thing
+			
+			// TODO fix convert and pack rgb values into pixel for the buffer
+			//mRenderPoint->setPixel(mBufferIndex++, pixelcol )
+			
+			// Move to next pixel
+			mCurrentX += mDeltaX;
+		}
+
+		// Move to next line of pixels on the view plane
+		mCurrentY += mDeltaY;
+
+		// Start next line
+		mNextLine = y + 1;
+
+		// exit to draw the screen
+		return false;
 	}
 
+	return true;
+}
+
+// Reset count and buffer pixel index. Setup camera. Defines view plane and x/y delate values for interpolation
+void Renderer::initialize()
+{
+	// Reset current line and buffer (current pixel) index
+	mNextLine = mBufferIndex = 0;
+
+	// Camera/view position from which rays will be cast
+	mEyePosition = Vector3(0, 0, -5);
+
+	// View plane in world coordinates (based on screen aspect ratio - 16:10)
+	mViewPlaneX1 = -8;
+	mViewPlaneX2 = 8;
+	mViewPlaneY1 = mCurrentY = 5;
+	mViewPlaneY2 = -5;
+
+	// Delta values used for interpolating along the view plane
+	mDeltaX = ( mViewPlaneX2 - mViewPlaneX1 ) / mRenderPoint->getWidth();
+	mDeltaY = ( mViewPlaneY2 - mViewPlaneY1 ) / mRenderPoint->getHeight();
 }
 
 
+
+
+// TODO Fix DRAW
+void Renderer::draw(GameObject * aWorld)
+{
+
+}
 /*
+
 void Renderer::draw( GameObject * aWorld )
 {
    // std::cout << program->getProgramID() << " ";
@@ -92,7 +151,11 @@ void Renderer::draw( GameObject * aWorld )
 	aWorld->draw( this );
 }*/
 
+// TODO FIX Renderer
+void Renderer::draw(unsigned int size, GLuint indicesBuffer, GLuint verticesBuffer, GLuint normalsBuffer, GLuint uvsBuffer) // size is count of indices
+{
 
+}
 /*
 void Renderer::draw( unsigned int size, GLuint indicesBuffer, GLuint verticesBuffer, GLuint normalsBuffer, GLuint uvsBuffer ) // size is count of indices
 {
@@ -108,36 +171,25 @@ void Renderer::draw( unsigned int size, GLuint indicesBuffer, GLuint verticesBuf
 	glBindTexture( GL_TEXTURE_2D, tex0 );
 	glUniform1i ( tex0Loc, 0 );
 
-	glActiveTexture(  GL_TEXTURE1 );
-	glBindTexture( GL_TEXTURE_2D, tex1 );
-	glUniform1i ( tex1Loc, 1 );
-
-	glActiveTexture(  GL_TEXTURE2 );
-	glBindTexture( GL_TEXTURE_2D, tex2 );
-	glUniform1i ( tex2Loc, 2 );
-
-	glActiveTexture(  GL_TEXTURE3 );
-	glBindTexture( GL_TEXTURE_2D, tex3 );
-	glUniform1i ( tex3Loc, 3 );
 
 	// set attributes
 	// set indices attribute
 	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, indicesBuffer);
 
 	// set vertexattribute
-	glEnableVertexAttribArray(verticesLoc); // enable variable
-	glBindBuffer(GL_ARRAY_BUFFER, verticesBuffer); // make vertices the current buffer
-	glVertexAttribPointer(verticesLoc, 3, GL_FLOAT, GL_FALSE, 0, 0); // point to bound buffer
+	glEnableVertexAttribArray( verticesLoc ); // enable variable
+	glBindBuffer( GL_ARRAY_BUFFER, verticesBuffer ); // make vertices the current buffer
+	glVertexAttribPointer( verticesLoc, 3, GL_FLOAT, GL_FALSE, 0, 0 ); // point to bound buffer
 
 	// set normalAttribute
-	glEnableVertexAttribArray(normalsLoc);
-	glBindBuffer(GL_ARRAY_BUFFER, normalsBuffer); // make vertices the current buffer
-	glVertexAttribPointer(normalsLoc, 3, GL_FLOAT, GL_TRUE, 0, 0); // GL_TRUE for nomalisation
+	glEnableVertexAttribArray( normalsLoc );
+	glBindBuffer( GL_ARRAY_BUFFER, normalsBuffer ); // make vertices the current buffer
+	glVertexAttribPointer( normalsLoc, 3, GL_FLOAT, GL_TRUE, 0, 0 ); // GL_TRUE for nomalisation
 
 	// set uv attribute
-	glEnableVertexAttribArray(textureLoc);
-	glBindBuffer(GL_ARRAY_BUFFER, uvsBuffer); // make vertices the current buffer
-	glVertexAttribPointer(textureLoc, 2, GL_FLOAT, GL_FALSE, 0, 0 );
+	glEnableVertexAttribArray( textureLoc );
+	glBindBuffer( GL_ARRAY_BUFFER, uvsBuffer ); // make vertices the current buffer
+	glVertexAttribPointer( textureLoc, 2, GL_FLOAT, GL_FALSE, 0, 0 );
 
 	// draw indexed arrays
 	glDrawElements( GL_TRIANGLES, size, GL_UNSIGNED_INT, (GLvoid*)0 );
@@ -148,15 +200,17 @@ void Renderer::draw( unsigned int size, GLuint indicesBuffer, GLuint verticesBuf
 	glDisableVertexAttribArray( normalsLoc );
 	glDisableVertexAttribArray( verticesLoc );
 	glBindTexture( GL_TEXTURE_2D, 0 );
+
 }*/
 
 
 /*********************************************************************************/
 
 // private members
+/*
 void Renderer::findLocations()
 {
-	assert ( program != NULL ); // only if there is a program set
+	assert ( program != 0 ); // only if there is a program set
 	projectionLoc 	= program->getUniformLocation( "projection" );
 	viewLoc			= program->getUniformLocation( "view" );
 	modelLoc 		= program->getUniformLocation( "model" );
@@ -167,4 +221,4 @@ void Renderer::findLocations()
 	verticesLoc		= program->getAttribLocation( "vertex" );
 	normalsLoc		= program->getAttribLocation( "normal" );
 	textureLoc 		= program->getAttribLocation( "uv" );
-}
+}*/
