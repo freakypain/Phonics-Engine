@@ -13,6 +13,7 @@ class Texture;
 class Behaviour;
 class ShaderProgram;
 class Light;
+class Ray;
 
 class GameObject
 {
@@ -25,13 +26,13 @@ class GameObject
 		Texture * texture;
         ShaderProgram * shader;
         Light * light;
-        int totalSprite;
+		Ray * ray;
         float startTime;
         bool adding;
 		std::vector<GameObject *> children;
 
 	public:
-		GameObject( std::string aName = 0, glm::vec3 aPosition = glm::vec3( 0.0f, 0.0f, 0.0f ));
+		GameObject( std::string aName = "", glm::vec3 aPosition = glm::vec3( 0.0f, 0.0f, 0.0f ));
 		//GameObject(std::string name = NULL, Vector3 position = Vector3( 0.0f, 0.0f, 0.0f ));
 
 		virtual ~GameObject();
@@ -66,6 +67,7 @@ class GameObject
 		virtual void update( float step );
 		virtual void onCollision(  GameObject * otherGameObject );
 		virtual void draw( Renderer * renderer, glm::mat4 parentTransform = glm::mat4(1) );
+		virtual bool intersect( Ray& ray, float& distance );
 		void draw( );
 
 		void add(GameObject * child);

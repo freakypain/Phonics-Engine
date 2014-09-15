@@ -1,3 +1,4 @@
+#include <iostream>
 #include <string>
 #include <gtc\matrix_transform.hpp>
 #include <glm.hpp>
@@ -5,6 +6,7 @@
 #include "Camera.hpp"
 #include "Renderer.hpp"
 #include "GameObject.hpp"
+#include "Ray.hpp"
 
 
 
@@ -15,7 +17,6 @@ Camera::Camera( std::string aName, glm::vec3 aPosition ) :	GameObject(aName, aPo
 	glm::vec3 up ( 0.0f, -1.0f, 0.0f );
 	transform = glm::inverse( glm::lookAt( eye, at, up ) );
 	projection = glm::perspective(  60.0f, 4.0f/3.0f, 0.1f, 100.0f  );
-
 }
 
 Camera::~Camera()
@@ -29,4 +30,11 @@ void Camera::draw( Renderer * renderer, glm::mat4 parentTransform )
 	//std::cout << "Camera sets View " << std::endl << transform << std::endl;
 	renderer->setProjection( projection ); // model = cam to worldspace so inverse for universe->camspace
 	renderer->setView( glm::inverse( transform ) ); // model = cam to worldspace so inverse for universe->camspace
+}
+
+
+// TODO Fix Intersection of Gameobjects
+bool Camera::intersect( Ray& ray, float& distance )
+{	
+	return false;
 }

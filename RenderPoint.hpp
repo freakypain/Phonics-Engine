@@ -11,10 +11,10 @@ public:
 	~RenderPoint();
 
 	// Accessors
-	BITMAPINFO* getBitmapInfo() { return mBitmapInfo; };
-	Pixel*		getBuffer()		{ return mBuffer;	 };
-	int			getWidth()		{ return mWidth;		 };
-	int			getHeight()		{ return mHeight;	 };
+	BITMAPINFO* getBitmapInfo() const;
+	Pixel*		getBuffer()		const;
+	int			getWidth()		const;
+	int			getHeight()		const;
 
 	void setPixel(int index, Pixel pixel);
 	void clear(Pixel colour);

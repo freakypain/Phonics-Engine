@@ -1,12 +1,16 @@
 #ifndef GAME_H
 #define GAME_H
 
+
+
+#include "Scene.hpp"
+
 class Hud;
 class Renderer;
-class Scene;
 class Camera;
 class Light;
 class GameObject;
+
 
 
 class Engine
@@ -14,7 +18,7 @@ class Engine
 	private: // data members
 		Hud * hud;
 		Renderer * renderer;
-		Scene * scene;
+		Scene scene;
 		Camera * camera;
 		Light * light;
 		bool running;

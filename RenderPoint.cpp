@@ -3,15 +3,44 @@
 #include "RenderPoint.hpp"
 
 
-RenderPoint::RenderPoint( int width, int height) : mWidth( width ), mHeight( height )
+RenderPoint::RenderPoint( int width, int height ) : mWidth( width ), mHeight( height )
 {
 	mBuffer = new Pixel[width * height];
 	initializeBitmap();
 }
 
+
 RenderPoint::~RenderPoint()
 {
 	delete[] mBuffer;
+}
+
+
+// Get Buffer
+Pixel* RenderPoint::getBuffer() const
+{
+	return mBuffer;
+}
+
+
+// Get BitmapInfo
+BITMAPINFO* RenderPoint::getBitmapInfo() const
+{
+	return mBitmapInfo;
+}
+
+
+// Get Width
+int RenderPoint::getWidth() const
+{
+	return mWidth;
+}
+	
+
+// Get Height
+int RenderPoint::getHeight() const
+{
+	return mHeight;
 }
 
 
@@ -20,6 +49,7 @@ void RenderPoint::setPixel( int index, Pixel pixel )
 {
 	mBuffer[index] = pixel;
 }
+
 
 // Clear pixel buffer
 void RenderPoint::clear( Pixel colour )
@@ -31,6 +61,7 @@ void RenderPoint::clear( Pixel colour )
 		mBuffer[i] = colour;
 	}
 }
+
 
 // DIB for Rendering http://msdn.microsoft.com/en-us/library/aa921550.aspx	
 void RenderPoint::initializeBitmap()

@@ -19,11 +19,17 @@ int main()
     return 0;
 }*/
 
+
 int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 { 
 	MSG	msg = MSG();
 
 	MyRegisterClass(hInstance);
+
+	// TODO remove temp code
+	Engine engine;
+	engine.build();
+
 
 	// Perform application initialization:
 	if (!InitInstance(hInstance, nCmdShow)) return FALSE;
@@ -34,7 +40,6 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		renderer->initialize();
 
 		// Render, breaking out for messages/drawing
-		//while (!rayTracer->Render())
 		while (!renderer->draw())
 		{
 			if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
@@ -85,30 +90,27 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	hdc = GetDC( hWnd );
 
 	// Initialize raw pixel buffer
-	//renderTarget = new RenderTarget(SCREENWIDTH, SCREENHEIGHT);
-	//renderTarget->Clear(0);
 	renderPoint = new RenderPoint( SCREENWIDTH, SCREENHEIGHT );
 	renderPoint->clear(0);
 
 	// Initialize RayTracer
-	//rayTracer = new RayTracer(renderTarget);
 	renderer = new Renderer( renderPoint );
 
 	return true;
 }
 
 //  Processes messages for the main window.
-LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam )
 {
-	switch (message)
+	switch ( message )
 	{
 		case WM_CLOSE:
-			ReleaseDC(hWnd, hdc);
-			DestroyWindow(hWnd);
-			ExitProcess(0);
+			ReleaseDC( hWnd, hdc );
+			DestroyWindow( hWnd );
+			ExitProcess( 0 );
 			break;
 		default:
-			return DefWindowProc(hWnd, message, wParam, lParam);
+			return DefWindowProc( hWnd, message, wParam, lParam );
 	}
 	return 0;
 }
@@ -116,10 +118,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 // 
 void draw()
 {
-	if (renderPoint->getBuffer())
+	if ( renderPoint->getBuffer() )
 	{
-		StretchDIBits(hdc, 0, 0, SCREENWIDTH, SCREENHEIGHT, 0, 0, SCREENWIDTH, SCREENHEIGHT, renderPoint->getBuffer(), renderPoint->getBitmapInfo(), DIB_RGB_COLORS, SRCCOPY);
-		ValidateRect(hWnd, NULL);
+		StretchDIBits( hdc, 0, 0, SCREENWIDTH, SCREENHEIGHT, 0, 0, SCREENWIDTH, SCREENHEIGHT, renderPoint->getBuffer(), renderPoint->getBitmapInfo(), DIB_RGB_COLORS, SRCCOPY );
+		ValidateRect( hWnd, NULL );
 	}
 }
 

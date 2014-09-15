@@ -28,7 +28,7 @@
 
 
 
-Engine::Engine() : hud(0), renderer(0), scene(0), camera(0), light(0)
+Engine::Engine() : hud(0), renderer(0), camera(0), light(0)
 {
 	//window = new sf::RenderWindow( sf::VideoMode( 800, 600, 32 ), "Santa smash"/*, sf::Style::Fullscreen*/); // get a window
 	//std::cout << "Init Glew" << glewInit() << std::endl;
@@ -37,6 +37,8 @@ Engine::Engine() : hud(0), renderer(0), scene(0), camera(0), light(0)
 
 	//window->setVerticalSyncEnabled( true ); // sync with monitor ->60 hz approx
 	//renderer = new Renderer( window );
+	
+	//scene = new Scene("World");
 }
 
 Engine::~Engine()
@@ -50,12 +52,14 @@ void Engine::build()
 	//ShaderProgram * shaderPoint = new ShaderProgram("shaders/pointlight.vert", "shaders/pointLight.frag");
 
 	// Camera
+	// TODO fix camera to unique pointer
 	//std::unique_ptr<Camera> camera("Camera", glm::vec3(30, 40, 25));
-	//camera = new Camera( "Camera", glm::vec3( 30, 40, 25) );
+	camera = new Camera( "Camera", glm::vec3( 30, 40, 25) );
     //camera->setBehaviour( new WASDBehaviour( camera, window ) );
 
 	// Add to Universe
-   // scene->add( camera );
+	scene.add(camera);
+  //  scene->add( camera );
 
 }
 
@@ -97,15 +101,15 @@ void Engine::control()
 
 void Engine::update( float step )
 {
-	assert( scene != 0 );
-	scene->update( step );
+	//scene->update( step );
+	scene.update( step );
 }
 
 void Engine::draw()
 {
 	//assert( window != 0 );
 	assert( renderer != 0 );
-	assert( scene != 0 );
+	//assert( scene != 0 );
 
 	//renderer->draw( scene );
 	hud->draw();

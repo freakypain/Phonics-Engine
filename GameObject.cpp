@@ -7,15 +7,21 @@
 #include "Time.hpp"
 #include "ShaderProgram.hpp"
 #include "Light.hpp"
+#include "Ray.hpp"
+
+// Temp
+#include "Camera.hpp"
+
+#include <vector>
 
 // TODO Fix GameObject missing allot of options
 
 
 GameObject::GameObject(std::string aName, glm::vec3 aPosition) : 
 																name(aName), transform(glm::translate(glm::mat4(1.0f), aPosition)), 
-																behaviour(NULL), collider(NULL), mesh(NULL), 
-																texture(NULL), shader(NULL),
-																light(NULL)
+																behaviour(nullptr), collider(nullptr), mesh(nullptr),
+																texture(nullptr), shader(nullptr),
+																light(nullptr), ray(nullptr), children()
 {
 
 }
@@ -47,6 +53,7 @@ void GameObject::setLocation(glm::vec3 aLocation)
 	transform = glm::translate(glm::mat4(1.0f), glm::vec3(transform[3][aLocation.x], transform[3][aLocation.y], transform[3][aLocation.z]));
 }
 
+
 glm::vec3 GameObject::getDirection()
 {
     return glm::vec3(transform[2]); // z axis return
@@ -64,10 +71,12 @@ const std::string GameObject::getName()
 	return name;
 }
 
+
 glm::vec3 GameObject::getLocation()
 {
 	return glm::vec3( transform[3][0], transform[3][1], transform[3][2] );
 }
+
 
 void GameObject::setBehaviour( Behaviour * aBehaviour )
 {
@@ -75,11 +84,13 @@ void GameObject::setBehaviour( Behaviour * aBehaviour )
 	behaviour = aBehaviour;
 }
 
+
 void GameObject::setShader(ShaderProgram * aShader)
 {
     assert(aShader != 0);
     shader = aShader;
 }
+
 
 bool GameObject::hasCollider()
 {
@@ -87,6 +98,7 @@ bool GameObject::hasCollider()
 
     return false;
 }
+
 
 Collider * GameObject::getCollider(){
     return collider;
@@ -98,6 +110,7 @@ void GameObject::setCollider(Collider *aCollider)
 	collider = aCollider;
 }
 
+
 void GameObject::removeCollider(){
     collider = 0;
 }
@@ -106,9 +119,11 @@ Behaviour * GameObject::getBehaviour(){
     return behaviour;
 }
 
+
 void GameObject::removeBehaviour(){
     behaviour = 0;
 }
+
 
 Mesh * GameObject::getMesh(){
     return mesh;
@@ -120,12 +135,14 @@ void GameObject::setMesh( Mesh * aMesh )
 	mesh = aMesh;
 }
 
+
 void GameObject::setTexture0( Texture * aTex )
 {
 	assert( aTex != 0 );
 	assert( aTex->getId() > 0 );
 	texture = aTex;
 }
+
 
 void GameObject::setLight(Light * aLight, ShaderProgram * aShader)
 {
@@ -135,10 +152,12 @@ void GameObject::setLight(Light * aLight, ShaderProgram * aShader)
     shader = aShader;
 }
 
+
 Light * GameObject::getLight()
 {
     return light;
 }
+
 
 void GameObject::update( float step )
 {
@@ -157,6 +176,7 @@ void GameObject::update( float step )
 	}
 }
 
+
 void GameObject::onCollision(  GameObject * otherGameObject )
 {
 	if ( behaviour ) {
@@ -170,6 +190,16 @@ void GameObject::draw(Renderer * aRenderer, glm::mat4 parentTransform)
 {
 
 }
+
+
+// TODO Fix intersect
+bool GameObject::intersect( Ray& ray, float& distance )
+{
+
+	return false;
+}
+
+
 /*
 void GameObject::draw( Renderer * aRenderer, glm::mat4 parentTransform )
 {
@@ -209,11 +239,13 @@ glm::mat4 GameObject::getTransform(){
     return transform;
 }
 
+
 void GameObject::add( GameObject * child )
 {
 	assert( child != 0 );
 	children.push_back( child );
 }
+
 
 void GameObject::removeChild( GameObject * child )
 {

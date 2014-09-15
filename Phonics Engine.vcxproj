@@ -92,6 +92,7 @@
     <ClCompile Include="Lights\Spotlight.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="Primitive.cpp" />
     <ClCompile Include="Ray.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="RenderPoint.cpp" />
@@ -115,6 +116,7 @@
     <ClInclude Include="Lights\Spotlight.hpp" />
     <ClInclude Include="Main.hpp" />
     <ClInclude Include="Mesh.hpp" />
+    <ClInclude Include="Primitive.hpp" />
     <ClInclude Include="Ray.hpp" />
     <ClInclude Include="Renderer.hpp" />
     <ClInclude Include="RenderPoint.hpp" />
