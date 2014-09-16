@@ -23,7 +23,7 @@ class GameObject
 		Behaviour * behaviour;
 		Collider * collider;
 		Mesh * mesh;
-		Texture * texture;
+		Texture * mTexture;
         ShaderProgram * shader;
         Light * light;
 		Ray * ray;
@@ -49,6 +49,8 @@ class GameObject
 
 		void setBehaviour( Behaviour * aBehaviour );
 		void setShader( ShaderProgram * aShader );
+		void setTexture( Texture * texture );
+
 		Behaviour * getBehaviour( );
 		void removeBehaviour( );
 		void setCollider( Collider * aCollider );
@@ -59,7 +61,6 @@ class GameObject
 		void setMesh( Mesh * aMesh );
 		Mesh * getMesh();
 		void makeQuad(int width, int height);
-		void setTexture0( Texture * aTex );
 
 		void setLight(Light * aLight, ShaderProgram * aShader);
 		Light * getLight();

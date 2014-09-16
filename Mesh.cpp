@@ -29,6 +29,11 @@ std::vector< glm::vec3 > Mesh::getVertices() {
 // TODO fix mesh loading from file
 // static functions
 // Load obj file with v/vt/vn
+Mesh * Mesh::load(const char * filename)
+{
+	return 0;
+}
+
 /*
 Mesh * Mesh::load( const char * fileName )
 {

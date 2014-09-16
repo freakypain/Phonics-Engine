@@ -1,60 +1,57 @@
 #include "ShaderProgram.hpp"
 #include "Texture.hpp"
 #include "Time.hpp"
+#include "External\stb_image.h"
 
 #include <iostream>
-#include <gl\GL.h> // Afther the Windows.h include
+#include <memory>
+#include <glm.hpp>
+#include <gl\GL.h>
 
+std::map< const char *, Texture * > Texture::mTextures; // for static textures
 
-std::map< const char *, Texture * > Texture::textures; // for static texturs var
-
-Texture::Texture( const char * aName ) :	name( aName )
+Texture::Texture( const char * filename ) : mFilename( filename )
 {
 	//ctor
 }
 
-// TODO Fix texture gpu removeal
 Texture::~Texture()
 {
-	//glDeleteTextures( 1, &id ); // free gpu memory
+	glDeleteTextures(1, &mTextureID);  // free gpu memory
 }
 
-// TODO fix texture loading
-/*
-Texture * Texture::load( const char * aName )
+Texture * Texture::load( const char* filename )
 {
+	// Check if image already has been loaded
+	std::map< const char*, Texture* >::iterator textureIterator = mTextures.find(filename);
+	if ( textureIterator != mTextures.end() )
+		return textureIterator->second;
 	
-	// check if in cache
-	std::map< const char *, Texture * >::iterator textureIterator = textures.find( aName );
-	if ( textureIterator != textures.end() ) {
-		std::cout << "Done loading texture form cache " << aName << std::endl;
-		return textureIterator->second;// key 2 exists, do something with iter->second (the value)
-	} else { // load from file and store in cache
-		sf::Image image;
-		if ( image.loadFromFile( aName ) ) {
-			image.flipVertically();
-			Texture * texture = new Texture( aName );
-				glGenTextures( 1, &texture->id );
-				glBindTexture( GL_TEXTURE_2D, texture->id );
-				glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, image.getSize().x, image.getSize().y, 0, GL_RGBA, GL_UNSIGNED_BYTE, image.getPixelsPtr() );
-				glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-				glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
-//				glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR );
-				//glGenerateMipmap( GL_TEXTURE_2D ); 							// for mipmapping
-				//glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0 ); 	// for mipmapping
-				//glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 4 ); 	// for mipmapping
+	// Load image from file
+	int width, height, comp;	
+	unsigned char* data = stbi_load(filename, &width, &height, &comp, 4); 
 
-				//std::cout << "Done loading texture " << aName << " with id " << texture->id << std::endl;
-			textures[aName] = texture; // stores mesh in cache for reuse
-			return texture;
-		} else {
-			std::cout << "Error loading texture image " << aName << std::endl;
-			return 0;
-		}
-	}
-}*/
+	if ( data == NULL )
+		return 0;
+		
+	std::unique_ptr<Texture> texture{new Texture( filename )};
 
+	glGenTextures(1, &texture->mTextureID);
+	glBindTexture(GL_TEXTURE_2D, texture->mTextureID);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 
-GLuint Texture::getId() {
-	return id;
+	stbi_image_free( data );
+
+	mTextures[filename] = texture.get();
+
+	return texture.get();
+}
+
+GLuint Texture::getId() const 
+{
+	return mTextureID;
 }

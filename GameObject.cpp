@@ -20,7 +20,7 @@
 GameObject::GameObject(std::string aName, glm::vec3 aPosition) : 
 																name(aName), transform(glm::translate(glm::mat4(1.0f), aPosition)), 
 																behaviour(nullptr), collider(nullptr), mesh(nullptr),
-																texture(nullptr), shader(nullptr),
+																mTexture(nullptr), shader(nullptr),
 																light(nullptr), ray(nullptr), children()
 {
 
@@ -136,11 +136,11 @@ void GameObject::setMesh( Mesh * aMesh )
 }
 
 
-void GameObject::setTexture0( Texture * aTex )
+void GameObject::setTexture( Texture * texture )
 {
-	assert( aTex != 0 );
-	assert( aTex->getId() > 0 );
-	texture = aTex;
+	assert( texture != 0 );
+	assert( texture->getId() > 0 );
+	mTexture = texture;
 }
 
 

@@ -51,11 +51,18 @@ void Engine::build()
     // Shader List
 	//ShaderProgram * shaderPoint = new ShaderProgram("shaders/pointlight.vert", "shaders/pointLight.frag");
 
+	// Add Plane to the world
+	GameObject *  ground = new GameObject( "Ground", glm::vec3( 0, 1, 0 ) );
+	ground->setMesh( Mesh::load( "models/floor.obj" ) );
+	ground->setTexture( Texture::load( "test.png" ) );
+
 	// Camera
 	// TODO fix camera to unique pointer
 	//std::unique_ptr<Camera> camera("Camera", glm::vec3(30, 40, 25));
 	camera = new Camera( "Camera", glm::vec3( 30, 40, 25) );
     //camera->setBehaviour( new WASDBehaviour( camera, window ) );
+
+	
 
 	// Add to Universe
 	scene.add(camera);
