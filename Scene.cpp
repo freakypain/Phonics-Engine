@@ -11,11 +11,14 @@
 #include "Collider.hpp"
 
 #include "Lights\PointLight.hpp"
+#include "Primitives\Sphere.hpp"
 
 
 Scene::Scene(std::string aName) : GameObject(aName)
 {
 	//ctor
+	// TODO make it universal
+	setupScene();
 }
 
 Scene::~Scene()
@@ -166,4 +169,15 @@ void Scene::checkCollision(){
             }
         }
     }
+}
+
+// Temp Setup Scene
+void Scene::setupScene()
+{
+	// Top light
+	mLights.push_back( new PointLight( Colour( 1.0f, 1.0f, 1.0f ), 	Vector3( 5.0f, 25.0f, 0.0f ) ) );
+
+	// Mirror sphere
+	mPrimitives.push_back( new Sphere( Material( Colour( 0.0f, 0.0f, 1.0f ), 0.2f, 1.0f, 0.0f ), Vector3( -7.5f, 2.0f, 5.0f ), 3.0f, true ) );
+
 }

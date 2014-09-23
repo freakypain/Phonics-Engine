@@ -98,6 +98,7 @@
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Primitive.cpp" />
+    <ClCompile Include="Primitives\Sphere.cpp" />
     <ClCompile Include="Ray.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="RenderPoint.cpp" />
@@ -126,6 +127,7 @@
     <ClInclude Include="Material.hpp" />
     <ClInclude Include="Mesh.hpp" />
     <ClInclude Include="Primitive.hpp" />
+    <ClInclude Include="Primitives\Sphere.hpp" />
     <ClInclude Include="Ray.hpp" />
     <ClInclude Include="Renderer.hpp" />
     <ClInclude Include="RenderPoint.hpp" />

@@ -8,11 +8,12 @@ class Ray
 	public:
 		Ray();
 		Ray( const Vector3& origin, const Vector3& direction );
-		~Ray() = default;
+		//~Ray() = default;
+		~Ray();
 
 
-		Vector3& getOrigin()	{ return mOrigin;    };
-		Vector3& getDirection()	{ return mDirection; };
+		Vector3& getOrigin();
+		Vector3& getDirection();
 
 	private:
 		Vector3 mOrigin;

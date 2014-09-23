@@ -1,11 +1,11 @@
-// Windows
+// External
 #include <Windows.h>
 #include <iostream>
 #include <glew.h>
 #include <gtc\type_ptr.hpp>
 #include <glm.hpp>
 
-// C++
+// Internal
 #include "Renderer.hpp"
 #include "ShaderProgram.hpp"
 #include "GameObject.hpp"
@@ -17,12 +17,15 @@
 
 Renderer::Renderer( RenderPoint* renderPoint ) :  program( 0 )
 {
+	// TODO fix the new scene and put it in the world
+	mScene = new Scene();
 	mRenderPoint = renderPoint;
 }
 
 Renderer::~Renderer()
 {
 	delete program;
+	delete mScene;
 }
 
 // TODO Fix set Shaders
@@ -81,7 +84,10 @@ Colour Renderer::traceRay( Ray& ray, int rayDepth )
 	GameObject* nearestGameObject = 0; // Test version
 	Primitive* nearestPrimitive = 0;
 
-	if ( !nearestGameObject ){
+
+	nearestPrimitive = mScene->getFirstPrimitive( ray, disToIntersect );
+
+	if ( !nearestPrimitive ){
 		return Colour();
 	} 
 	else {
@@ -142,6 +148,11 @@ bool Renderer::draw()
 	}
 
 	return true;
+}
+
+Scene* Renderer::getScene()
+{
+	return mScene;
 }
 
 // Reset count and buffer pixel index. Setup camera. Defines view plane and x/y delate values for interpolation

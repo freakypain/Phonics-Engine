@@ -51,12 +51,13 @@ class Renderer
         void setView( glm::mat4 aView );
         void setModel( glm::mat4 aModel );
         void setShader(ShaderProgram * aShader);
-
-        ShaderProgram * getShaderProgram();
-
 		void setTime( float aTime );
 		void setLight( glm::vec3 aLight );
 		void setTexture ( Texture * texture );
+		
+		ShaderProgram * getShaderProgram();
+		Scene* getScene();
+
 		void initialize();
 
 		void draw( GameObject * aWorld ); // starting point for drawing

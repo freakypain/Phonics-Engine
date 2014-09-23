@@ -3,7 +3,7 @@
 
 #include "../Light.hpp"
 
-class PointLight : Light
+class PointLight : public Light
 {
 	public:
 		PointLight( Colour colour, Vector3 position );

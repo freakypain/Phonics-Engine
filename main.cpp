@@ -83,7 +83,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 // Saves instance handle and creates/displays main window
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
-
+	
 	hWnd = CreateWindow(
 		"PhonicsEngineWindow",
 		"Phonics Engine",
@@ -95,9 +95,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 		NULL, NULL,
 		hInstance, NULL);
 
+	ShowWindow( hWnd, SW_NORMAL );
 
-	//ShowWindow( hWnd, SW_NORMAL );
-	ShowWindow( hWnd, nCmdShow );
 
 	hdc = GetDC( hWnd );
 
