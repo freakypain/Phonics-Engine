@@ -1,15 +1,17 @@
-// External
+// Windows
 #include <Windows.h>
-#include <gl\GL.h>
+#include <iostream>
+#include <glew.h>
 #include <gtc\type_ptr.hpp>
 #include <glm.hpp>
 
-// Internal
+// C++
 #include "Renderer.hpp"
 #include "ShaderProgram.hpp"
 #include "GameObject.hpp"
 #include "Texture.hpp"
 #include "Time.hpp"
+#include "Scene.hpp"
 
 
 
@@ -51,11 +53,11 @@ void Renderer::setLight( glm::vec3 aLight )
 	light = aLight; // cache light prosition for positional light
 }
 
-/*
-void Renderer::setTexture0( Texture * aTex ) // for single texture at a time, otherwise use activeTexture
+
+void Renderer::setTexture( Texture * texture ) // for single texture at a time, otherwise use activeTexture
 {
-	tex0 = aTex->getId();
-}*/
+	mTexture = texture->getID();
+}
 
 void Renderer::setTime( float aTime )
 {
@@ -65,6 +67,42 @@ void Renderer::setTime( float aTime )
 ShaderProgram * Renderer::getShaderProgram()
 {
     return program;
+}
+
+Colour Renderer::traceRay( Ray& ray, int rayDepth )
+{
+	if ( rayDepth > MAXTRACEDEPTH )
+		return	Colour();
+
+	Colour colourReflect, colourLitPrim;
+	float disToIntersect = MAXDISTANCE;
+	Vector3 interSectPoint;
+	// Here comes game objects
+	GameObject* nearestGameObject = 0; // Test version
+	Primitive* nearestPrimitive = 0;
+
+	if ( !nearestGameObject ){
+		return Colour();
+	} 
+	else {
+		interSectPoint = ray.getOrigin() = ray.getDirection() * disToIntersect;
+		colourLitPrim = mScene->calcuatePrimiateLightingAtPoint((*nearestPrimitive), interSectPoint, ray.getDirection() ); // Lit nearest Primitive
+		//colourLitGameObject = mScene->calcuatePrimiateLightingAtPoint((*nearestPrimitive), interSectPoint, ray.getDirection()); // Lit nearest Primitive
+
+		// Calculate reflections
+		float reflection = nearestPrimitive->getMaterial()->reflection;
+
+		if ( reflection > 0.0f )
+		{
+			Vector3 normal = nearestPrimitive->getNormal( interSectPoint );
+			Vector3 reflect = ray.getDirection() - normal * ( 2.0f * Vector3::dot( ray.getDirection(), normal ) );
+
+			Ray reflectRay = Ray( interSectPoint + reflect * 0.001f, reflect );
+			colourReflect = traceRay( reflectRay, rayDepth + 1 ) * reflection;
+		}
+
+		return colourLitPrim + colourReflect;
+	}
 }
 
 bool Renderer::draw()
@@ -84,10 +122,10 @@ bool Renderer::draw()
 			Ray ray( mEyePosition, direction );
 
 			// Find the cloesest primitave and its colour
-			// TODO fix pixelcolour thing
+			Colour pixelColour = traceRay(ray, 1);
 			
-			// TODO fix convert and pack rgb values into pixel for the buffer
-			//mRenderPoint->setPixel(mBufferIndex++, pixelcol )
+			// Convert and pack rgb values into pixel for the buffer
+			mRenderPoint->setPixel( mBufferIndex++, pixelColour.createPixel() );
 			
 			// Move to next pixel
 			mCurrentX += mDeltaX;
@@ -128,8 +166,7 @@ void Renderer::initialize()
 
 
 
-
-// TODO Fix DRAW
+// TODO Fix DRAW to render GameObjects
 void Renderer::draw(GameObject * aWorld)
 {
 
@@ -154,7 +191,7 @@ void Renderer::draw( GameObject * aWorld )
 // TODO FIX Renderer
 void Renderer::draw(unsigned int size, GLuint indicesBuffer, GLuint verticesBuffer, GLuint normalsBuffer, GLuint uvsBuffer) // size is count of indices
 {
-
+	
 }
 /*
 void Renderer::draw( unsigned int size, GLuint indicesBuffer, GLuint verticesBuffer, GLuint normalsBuffer, GLuint uvsBuffer ) // size is count of indices

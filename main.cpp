@@ -2,6 +2,9 @@
 #include "Engine.hpp"
 #include "RenderPoint.hpp"
 #include "Renderer.hpp"
+#include "Debug.hpp"
+
+#include <iostream>
 
 
 /*
@@ -26,9 +29,13 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 	MyRegisterClass(hInstance);
 
+
 	// TODO remove temp code
-	Engine engine;
-	engine.build();
+	//Engine engine;
+	//engine.build();
+
+	//Debug debug;
+	//debug.showConsole();
 
 
 	// Perform application initialization:
@@ -39,7 +46,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	{
 		renderer->initialize();
 
-		// Render, breaking out for messages/drawing
+		// Render, breaking out for messages/drawing		
 		while (!renderer->draw())
 		{
 			if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
@@ -48,8 +55,9 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 				DispatchMessage(&msg);
 			}
 
-			draw();
+			 draw();
 		}
+
 	}
 	return 1;
 }
@@ -62,11 +70,12 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 	wc.cbClsExtra = 0;
 	wc.cbWndExtra = 0;
 	wc.hInstance = hInstance;
-	wc.hIcon = NULL;
-	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
+	wc.hIcon = LoadIcon( NULL, MAKEINTRESOURCE( IDI_APPLICATION ) );
+	wc.hCursor = LoadCursor( NULL, IDC_ARROW );
 	wc.hbrBackground = NULL;
 	wc.lpszMenuName = NULL;
-	wc.lpszClassName = "Renderer";
+	wc.lpszMenuName = "MainMenu";
+	wc.lpszClassName = "MainWClassRenderer";
 
 	return RegisterClass(&wc);
 }
@@ -74,8 +83,9 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 // Saves instance handle and creates/displays main window
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
+
 	hWnd = CreateWindow(
-		"Phonics Engine",
+		"PhonicsEngineWindow",
 		"Phonics Engine",
 		WS_OVERLAPPEDWINDOW & ~WS_MAXIMIZEBOX & ~WS_THICKFRAME,
 		CW_USEDEFAULT,
@@ -85,7 +95,9 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 		NULL, NULL,
 		hInstance, NULL);
 
-	ShowWindow( hWnd, SW_NORMAL );
+
+	//ShowWindow( hWnd, SW_NORMAL );
+	ShowWindow( hWnd, nCmdShow );
 
 	hdc = GetDC( hWnd );
 
@@ -95,6 +107,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
 	// Initialize RayTracer
 	renderer = new Renderer( renderPoint );
+	
 
 	return true;
 }

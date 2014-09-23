@@ -139,7 +139,7 @@ void GameObject::setMesh( Mesh * aMesh )
 void GameObject::setTexture( Texture * texture )
 {
 	assert( texture != 0 );
-	assert( texture->getId() > 0 );
+	assert( texture->getID() > 0 );
 	mTexture = texture;
 }
 

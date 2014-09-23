@@ -7,10 +7,13 @@
 
 #include "RenderPoint.hpp"
 #include "Ray.hpp"
+#include "Colour.hpp"
 
 class ShaderProgram;
 class Texture;
 class GameObject;
+class Texture;
+class Scene;
 
 class Renderer
 {
@@ -21,7 +24,7 @@ class Renderer
 		float			mDeltaX, mDeltaY;
 		float			mCurrentX, mCurrentY;
 		RenderPoint*	mRenderPoint;
-		//Scene*			mScene;
+		Scene*			mScene;
 		int				mNextLine;
 		int				mBufferIndex;
 		Vector3			mEyePosition;
@@ -37,7 +40,7 @@ class Renderer
 		float time;
 		glm::mat4 projection, view, model;
 		glm::vec3 light;
-		//GLuint tex0;
+		GLuint mTexture;
 		
 
 	public:
@@ -53,11 +56,12 @@ class Renderer
 
 		void setTime( float aTime );
 		void setLight( glm::vec3 aLight );
-		//void setTexture0 ( Texture * tex0 );
+		void setTexture ( Texture * texture );
 		void initialize();
 
 		void draw( GameObject * aWorld ); // starting point for drawing
 		void draw( unsigned int size, GLuint indicesId, GLuint verticesId, GLuint normalsId, GLuint uvsId ); // drawing mesh, all other uniforms etc should be allready available
+		Colour traceRay( Ray& ray, int rayDepth );
 		bool draw();
 		
 	private:

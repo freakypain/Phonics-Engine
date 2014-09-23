@@ -53,8 +53,8 @@ void Engine::build()
 
 	// Add Plane to the world
 	GameObject *  ground = new GameObject( "Ground", glm::vec3( 0, 1, 0 ) );
-	ground->setMesh( Mesh::load( "models/floor.obj" ) );
-	ground->setTexture( Texture::load( "test.png" ) );
+	//ground->setMesh( Mesh::load( "models/floor.obj" ) );
+	//ground->setTexture( Texture::load( "test.png" ) );
 
 	// Camera
 	// TODO fix camera to unique pointer

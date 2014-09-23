@@ -1,7 +1,20 @@
 #include "Mesh.hpp"
 #include "Renderer.hpp"
 
-Mesh::Mesh() : indicesBuffer(0), verticesBuffer(0), normalsBuffer(0), uvsBuffer(0)
+
+#include <iostream>
+#include <cstdlib>
+#include <fstream>
+#include <cstring>
+#include <map>
+
+#include <glm.hpp>
+#include <gl\GL.h>
+
+
+
+//Mesh::Mesh() : indicesBuffer(0), verticesBuffer(0), normalsBuffer(0), uvsBuffer(0)
+Mesh::Mesh()
 {
 	//ctor
 }
@@ -11,9 +24,10 @@ Mesh::~Mesh()
 	//dtor
 }
 
+/*
 unsigned int Mesh::size() {
 	return indices.size();
-}
+}*/
 
 void Mesh::draw( Renderer * aRenderer )
 {
@@ -21,18 +35,56 @@ void Mesh::draw( Renderer * aRenderer )
 	//aRenderer->draw( size(), indicesBuffer, verticesBuffer, normalsBuffer, uvsBuffer );
 }
 
+/*
 std::vector< glm::vec3 > Mesh::getVertices() {
     return vertices;
-}
+}*/
 
 
 // TODO fix mesh loading from file
 // static functions
 // Load obj file with v/vt/vn
+
+
+struct faceVert
+{
+	faceVert() : vert( -1 ), norm( -1 ), coord( -1 ) {}
+	int vert;
+	int norm;
+	int coord;
+};
+
+struct vertLess
+{
+	bool operator() ( const faceVert& lhs, const faceVert& rhs ) const
+	{
+		if ( lhs.vert != rhs.vert ) return lhs.vert < rhs.vert;
+		if ( lhs.norm != rhs.norm ) return lhs.norm < rhs.norm;
+		if ( lhs.coord != lhs.coord ) return lhs.coord < rhs.coord;
+
+		return false;
+	}
+};
+
+/*
 Mesh * Mesh::load(const char * filename)
 {
 	return 0;
+}*/
+
+Mesh * Mesh::load( const char * filename )
+{
+	/*
+	std::ifstream fstream;
+	fstream.open(filename, ios_base::in);
+	//if (!fstream.is_open())
+		*/
+	
+
+
+	return 0;
 }
+
 
 /*
 Mesh * Mesh::load( const char * fileName )
@@ -119,12 +171,12 @@ void Mesh::buffer()
 	if ( ! indicesBuffer ) { // if not buffered yet
 		glGenBuffers( 1, &indicesBuffer  );
 			glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, indicesBuffer  );
-			glBufferData( GL_ELEMENT_ARRAY_BUFFER, indices.size()*sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+			glBufferData( GL_ELEMENT_ARRAY_BUFFER, indices.size()*sizeof(unsigned int), &indices[0], GL_STATIC_DRAW );
 		glGenBuffers(1, &verticesBuffer );
-			glBindBuffer( GL_ARRAY_BUFFER, verticesBuffer ); // working on vertices buffer
+			glBindBuffer( GL_ARRAY_BUFFER, verticesBuffer ); // Vertices buffer
 			glBufferData( GL_ARRAY_BUFFER, vertices.size()*sizeof(glm::vec3), &vertices[0][0], GL_STATIC_DRAW );
 		glGenBuffers(1, &normalsBuffer );
-			glBindBuffer( GL_ARRAY_BUFFER, normalsBuffer ); // working on normals buffer
+			glBindBuffer( GL_ARRAY_BUFFER, normalsBuffer ); // Normals buffer
 			glBufferData( GL_ARRAY_BUFFER, normals.size()*sizeof(glm::vec3), &normals[0][0], GL_STATIC_DRAW );
 		glGenBuffers(1, &uvsBuffer );
 			glBindBuffer( GL_ARRAY_BUFFER, uvsBuffer ); // working on uvs buffer

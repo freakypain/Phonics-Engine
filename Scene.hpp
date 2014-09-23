@@ -1,12 +1,16 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-#include "GameObject.hpp"
+// C++
+#include <vector>
 
-class Camera;
-class Light;
-class Primitive;
-class Ray;
+// Project
+#include "GameObject.hpp"
+#include "Camera.hpp"
+#include "Ray.hpp"
+#include "Colour.hpp"
+#include "Primitive.hpp"
+
 
 class Scene : public GameObject
 {
@@ -18,13 +22,15 @@ class Scene : public GameObject
 		void checkCollision();
 		virtual void draw( Renderer * renderer );
 		Primitive* getFirstPrimitive( Ray& ray, float& distanceToIntersect ) const;
-		GameObject* getFirstGameObject(Ray& ray, float& distanceToIntersect);
+		GameObject* getFirstGameObject( Ray& ray, float& distanceToIntersect );
+		Colour calcuatePrimiateLightingAtPoint( Primitive& primitive, Vector3& intersecPoint, Vector3 rayDirection );
 
 	private:
 		void setupScene();
 
 		std::vector<Primitive*> mPrimitives;
 		std::vector<GameObject*> mGameObjects;
+		std::vector<Light*> mLights; 
 };
 
 #endif // WORLD_H

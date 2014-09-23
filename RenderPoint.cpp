@@ -56,10 +56,9 @@ void RenderPoint::clear( Pixel colour )
 {
 	int pixelCount = mWidth * mHeight;
 
-	for (int i = 0; i < pixelCount; i++)
-	{
+	for (int i = 0; i < pixelCount; i++)	
 		mBuffer[i] = colour;
-	}
+	
 }
 
 
@@ -68,9 +67,8 @@ void RenderPoint::initializeBitmap()
 {
 
 	for ( int i = 0; i < sizeof(BITMAPINFOHEADER) + 16; i++ )
-	{
 		mBitmapBuffer[i] = 0;
-	}
+	
 
 	mBitmapInfo = (BITMAPINFO*)&mBitmapBuffer;
 	mBitmapInfo->bmiHeader.biSize = sizeof(BITMAPINFOHEADER);

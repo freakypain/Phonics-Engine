@@ -20,6 +20,7 @@ RenderPoint*		renderPoint = 0; // 16-bit highcolor renderpoint
 Renderer*			renderer =  0; // Ray tracing engine
 
 // Forward method declarations
+int					WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPSTR, int);
 ATOM				MyRegisterClass(HINSTANCE hInstance);
 BOOL				InitInstance(HINSTANCE hInstance, int nCmdShow);
 LRESULT CALLBACK	WndProc(HWND, UINT, WPARAM, LPARAM);

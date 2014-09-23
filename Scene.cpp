@@ -10,6 +10,9 @@
 #include "Light.hpp"
 #include "Collider.hpp"
 
+#include "Lights\PointLight.hpp"
+
+
 Scene::Scene(std::string aName) : GameObject(aName)
 {
 	//ctor
@@ -62,15 +65,16 @@ Primitive* Scene::getFirstPrimitive(Ray& ray, float& distanceToIntersect) const
 	return nearestPrimitive;
 }
 
-
+//Calculates  effect of light on a primitive & GameObject at a given point
 GameObject* Scene::getFirstGameObject( Ray& ray, float& distanceToIntersect )
 {
 	GameObject* closestGameObject = 0;
 	float distance = MAXDISTANCE;
-
+	
 	//for (std::vector<GameObject*>::iterator g = children.begin(); g != children.end(); ++g)
 	for (std::vector<GameObject*>::iterator g = children.begin(); g != children.end(); ++g)
 	{
+		// TODO Fix value to be dynamic
 		GameObject* currentGameObject = mGameObjects[0]; // Testing (Values needs to be G)
 
 		if ( currentGameObject->intersect( ray, distance ) )
@@ -80,11 +84,75 @@ GameObject* Scene::getFirstGameObject( Ray& ray, float& distanceToIntersect )
 				distanceToIntersect = distance;
 				closestGameObject = currentGameObject;
 			}
-
-		}
-
-		return closestGameObject;
+		}		
 	}
+
+	return closestGameObject;
+}
+
+Colour Scene::calcuatePrimiateLightingAtPoint( Primitive& primitive, Vector3& intersecPoint, Vector3 rayDirection )
+{
+	Colour colourAtIntersect;
+
+	// Calculate lighting for each point light
+	for (UINT l = 0; l < mLights.size(); l++)
+	{
+		Light* light = mLights[l];
+
+		if (light->getType() == LIGHT_POINT)
+		{
+			Vector3 normal = primitive.getNormal(intersecPoint);
+			Vector3 toLight = ((PointLight*)light)->getPosition() - intersecPoint;
+
+			// Normalize Light
+			float distToLight = toLight.length();
+			toLight *= ( 1.0f / distToLight );
+
+			// Determine primitive is in shadow
+			bool inLight = true;
+			Ray  shadowRay = Ray(intersecPoint + toLight * 0.0001f, toLight);
+
+			for (UINT p = 0; p < mPrimitives.size(); p++)
+			{
+				Primitive* primitiveToTest = mPrimitives[p];
+
+				// Does the ray intersect a primitive before it hits the light?
+				if (primitiveToTest->getShadow())
+				{
+					if (primitiveToTest->intersect(shadowRay, distToLight))
+					{
+						inLight = false;
+						break;
+					}
+				}
+			}
+
+			if ( inLight == true )
+			{
+				// Calculate diffuse component
+				float diffuseIntensity = Vector3::dot(toLight, normal) * primitive.getMaterial()->diffuseFactor;
+
+				// Is the primitive facing the light?
+				if (diffuseIntensity > 0)
+				{
+					colourAtIntersect += (primitive.getMaterial()->diffuse * light->getColour()) * diffuseIntensity;
+				}
+
+				// Calculate Specular
+				Vector3 reflectedLight = toLight - normal * (2.0f * Vector3::dot(toLight, normal));
+				float	reflectedLightAlongRay = Vector3::dot(rayDirection, reflectedLight);
+
+				// Visible reflected Light
+				if ( reflectedLightAlongRay > 0 )
+				{
+					float specularIntensity = powf(reflectedLightAlongRay, 25) * primitive.getMaterial()->specular;
+					colourAtIntersect += light->getColour() * specularIntensity;
+				}
+			}
+		}
+	}
+
+	return colourAtIntersect;
 }
 
 // Look for colliders

@@ -3,7 +3,7 @@
 #include "Colour.hpp"
 
 
-Primitive::Primitive(bool castShadow = true) : mCastShadows(castShadow)
+Primitive::Primitive( Material material, bool castShadow = true ) : mCastShadows(castShadow), mMaterial( material )
 {
 
 }
@@ -13,5 +13,20 @@ Primitive::~Primitive()
 
 }
 
-// TODO Fix colour the returning of the colour and material
-//Colour Primitive::getColour( Vector3&  )
+// Get Normal
+Material* Primitive::getMaterial()
+{
+	return &mMaterial;
+}
+
+// Get Colour
+Colour Primitive::getColour( Vector3& ) const
+{
+	return mMaterial.diffuse;
+}
+
+// Return Shadow
+bool Primitive::getShadow()
+{
+	return mCastShadows;
+}

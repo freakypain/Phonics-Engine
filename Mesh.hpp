@@ -4,23 +4,21 @@
 #include <Windows.h>
 #include <iostream>
 #include <vector>
+#include "Vector3.hpp"
+
+
 #include <gtc\matrix_transform.hpp>
 #include <gl\GL.h>
 
 class Renderer;
 
+struct Face
+{
+	int a,b,c;
+};
+
 class Mesh
 {
-	private: // data mambers
-		std::vector< unsigned int > indices; // index to the v/n/t/u/
-		std::vector< glm::vec3 > vertices; // all the vertices
-		std::vector< glm::vec3 > normals; // normal to the vertex
-		std::vector< glm::vec2 > uvs; // uv to the vertex
-
-		GLuint indicesBuffer; // id of buffered mesh;
-		GLuint verticesBuffer; // id of buffered mesh;
-		GLuint normalsBuffer; // buffered normals id
-		GLuint uvsBuffer; // buffered uv's id
 
 	public: // functions
 		Mesh();
@@ -28,28 +26,30 @@ class Mesh
 
 		static Mesh * load( const char * fileName );
 
-		std::vector<glm::vec3> getVertices();
+		//std::vector<glm::vec3> getVertices();
 
-		unsigned int size();
+		//unsigned int size();
 
 		void draw( Renderer * aRenderer );
 
+		const int getIndicies() const;
+		const int getVertices() const;
+		const unsigned int getFaces() const;
+		const float getPositions() const;
+		const float getNormals() const;
+
+		 
+
 	private:
+		std::vector<Face> mFaces;
+		std::vector<Vector3> mPositions;
+		std::vector<Vector3> mNormals;
+
+//https://github.com/tamato/simple-obj-loader/blob/master/objloader.h , E:\Downloads\simple-obj-loader-master\simple-obj-loader-master
+
 		void buffer();
 		void unBuffer();
 
-		class PackedIndex { // for loading and converting to indexed arrays
-			public:
-				unsigned int v;
-				unsigned int n;
-				unsigned int t;
-				PackedIndex( unsigned int aV, unsigned int aN, unsigned int aT )
-				:	v(aV),n(aN),t(aT) {
-				}
-				bool operator<(const PackedIndex other) const{ // needed for use as key in map
-					return memcmp((void*)this, (void*)&other, sizeof(PackedIndex))>0;
-				}
-		};
 
 };
 

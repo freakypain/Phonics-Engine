@@ -23,10 +23,9 @@ class Texture
 		Texture( const char* filename );
 
 	public:
-		// TODO Fix texture Loading
 		static Texture * load( const char* filename ); 
 		virtual ~Texture();
-		GLuint getId() const;
+		GLuint getID() const;
 
 };
 
