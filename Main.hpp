@@ -15,12 +15,13 @@
 static	WNDCLASS	wc;		// Window class data
 static	HWND		hWnd;	// Window handle
 static  HDC			hdc;	// Handle to device context (drawable renderTarget)
+static HINSTANCE	hInst;	// Current Instance
 
 RenderPoint*		renderPoint = 0; // 16-bit highcolor renderpoint
 Renderer*			renderer =  0; // Ray tracing engine
 
 // Forward method declarations
-int					WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPSTR, int);
+int					APIENTRY _tWinMain(HINSTANCE, HINSTANCE, LPSTR, int);
 ATOM				MyRegisterClass(HINSTANCE hInstance);
 BOOL				InitInstance(HINSTANCE hInstance, int nCmdShow);
 LRESULT CALLBACK	WndProc(HWND, UINT, WPARAM, LPARAM);

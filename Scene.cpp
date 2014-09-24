@@ -12,6 +12,7 @@
 
 #include "Lights\PointLight.hpp"
 #include "Primitives\Sphere.hpp"
+#include "Primitives\Plane.hpp"
 
 
 Scene::Scene(std::string aName) : GameObject(aName)
@@ -113,7 +114,7 @@ Colour Scene::calcuatePrimiateLightingAtPoint( Primitive& primitive, Vector3& in
 
 			// Determine primitive is in shadow
 			bool inLight = true;
-			Ray  shadowRay = Ray(intersecPoint + toLight * 0.0001f, toLight);
+			Ray  shadowRay = Ray( intersecPoint + toLight * 0.0001f, toLight );
 
 			for (UINT p = 0; p < mPrimitives.size(); p++)
 			{
@@ -121,13 +122,12 @@ Colour Scene::calcuatePrimiateLightingAtPoint( Primitive& primitive, Vector3& in
 
 				// Does the ray intersect a primitive before it hits the light?
 				if (primitiveToTest->getShadow())
-				{
 					if (primitiveToTest->intersect(shadowRay, distToLight))
 					{
 						inLight = false;
 						break;
 					}
-				}
+				
 			}
 
 			if ( inLight == true )
@@ -136,10 +136,9 @@ Colour Scene::calcuatePrimiateLightingAtPoint( Primitive& primitive, Vector3& in
 				float diffuseIntensity = Vector3::dot(toLight, normal) * primitive.getMaterial()->diffuseFactor;
 
 				// Is the primitive facing the light?
-				if (diffuseIntensity > 0)
-				{
+				if (diffuseIntensity > 0)				
 					colourAtIntersect += (primitive.getMaterial()->diffuse * light->getColour()) * diffuseIntensity;
-				}
+				
 
 				// Calculate Specular
 				Vector3 reflectedLight = toLight - normal * (2.0f * Vector3::dot(toLight, normal));
@@ -177,7 +176,15 @@ void Scene::setupScene()
 	// Top light
 	mLights.push_back( new PointLight( Colour( 1.0f, 1.0f, 1.0f ), 	Vector3( 5.0f, 25.0f, 0.0f ) ) );
 
-	// Mirror sphere
-	mPrimitives.push_back( new Sphere( Material( Colour( 0.0f, 0.0f, 1.0f ), 0.2f, 1.0f, 0.0f ), Vector3( -7.5f, 2.0f, 5.0f ), 3.0f, true ) );
+	// Red sphere
+	mPrimitives.push_back(new Sphere( Material( Colour( 1.0f, 0.0f, 0.0f ), 0.6f, 0.0f, 1.0f ), Vector3(7.5f, 2.0f, 5.0f), 3.0f, true ) );
 
+	// Mirror sphere
+	mPrimitives.push_back(new Sphere( Material( Colour( 0.0f, 0.0f, 1.0f ), 0.2f, 1.0f, 0.0f ), Vector3( -7.5f, 2.0f, 5.0f ), 3.0f, true ) );
+
+	// Rear Plane
+	mPrimitives.push_back(new Plane( Material( Colour( 0.0f, 0.0f, 0.2f ), 1.0f, 0.0f, 0.2f ), Vector3( 0, 0, -1 ), 10.0f, false ) );
+
+	// Floor Plane
+	mPrimitives.push_back(new Plane( Material( Colour( 0.0f, 0.0f, 0.2f ), 1.0f, 1.0f, 0.2f ), Vector3( 0, 1, 0 ), 2.0f, false ) );
 }

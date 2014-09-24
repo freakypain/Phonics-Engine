@@ -1,11 +1,12 @@
 #include "Mesh.hpp"
 #include "Renderer.hpp"
 
-
+#include <ios>
 #include <iostream>
 #include <cstdlib>
 #include <fstream>
 #include <cstring>
+#include <cassert>
 #include <map>
 
 #include <glm.hpp>
@@ -76,9 +77,12 @@ Mesh * Mesh::load( const char * filename )
 {
 	/*
 	std::ifstream fstream;
-	fstream.open(filename, ios_base::in);
-	//if (!fstream.is_open())
-		*/
+	fstream.open( filename, std::ios_base::in );
+	if (!fstream.is_open())
+	{
+
+	}*/
+
 	
 
 

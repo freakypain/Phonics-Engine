@@ -1,5 +1,8 @@
 #pragma once
 
+// Set Debug Mode
+#define DEBUG false
+
 // Packed RGB *0-255
 typedef unsigned int Pixel;
 
@@ -8,6 +11,7 @@ typedef unsigned int Pixel;
 
 // Max trace depth
 #define MAXTRACEDEPTH 10
+
 
 // Includes
 /*

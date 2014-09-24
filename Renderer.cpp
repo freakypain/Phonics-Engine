@@ -158,7 +158,7 @@ Scene* Renderer::getScene()
 // Reset count and buffer pixel index. Setup camera. Defines view plane and x/y delate values for interpolation
 void Renderer::initialize()
 {
-	// Reset current line and buffer (current pixel) index
+	// Reset current line and buffer index
 	mNextLine = mBufferIndex = 0;
 
 	// Camera/view position from which rays will be cast

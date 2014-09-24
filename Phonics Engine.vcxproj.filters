@@ -123,6 +123,9 @@
     <ClCompile Include="Primitives\Sphere.cpp">
       <Filter>Source Files\Primitives</Filter>
     </ClCompile>
+    <ClCompile Include="Primitives\Plane.cpp">
+      <Filter>Header Files\Primitives</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Behaviour.hpp">
@@ -208,6 +211,9 @@
     </ClInclude>
     <ClInclude Include="Primitives\Sphere.hpp">
       <Filter>Header Files\Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="Primitives\Plane.hpp">
+      <Filter>Source Files\Primitives</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

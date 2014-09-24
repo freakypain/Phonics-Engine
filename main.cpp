@@ -7,23 +7,8 @@
 #include <iostream>
 
 
-/*
-int main()
-{
-    std::cout << "Starting Engine" << std::endl;
-
-	
-	Engine engine; //= new Engine();
-
-	engine.build();
-	engine.run();
-	engine.stop();
-
-    return 0;
-}*/
-
-
-int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+//int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+int APIENTRY _tWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPTSTR    lpCmdLine, _In_ int nCmdShow = true)
 { 
 	MSG	msg = MSG();
 
@@ -31,12 +16,15 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 
 	// TODO remove temp code
-	//Engine engine;
-	//engine.build();
+	Engine engine;
+	engine.build();
 
-	//Debug debug;
-	//debug.showConsole();
-
+	// Show debug output
+	if (DEBUG == true)
+	{
+		Debug debug;
+		debug.showConsole();
+	}
 
 	// Perform application initialization:
 	if (!InitInstance(hInstance, nCmdShow)) return FALSE;
@@ -75,17 +63,23 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 	wc.hbrBackground = NULL;
 	wc.lpszMenuName = NULL;
 	wc.lpszMenuName = "MainMenu";
-	wc.lpszClassName = "MainWClassRenderer";
+	wc.lpszClassName = "PhonicsEngine";
 
 	return RegisterClass(&wc);
 }
 
+
+//Forward declaration of the WndProc function
+LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
 // Saves instance handle and creates/displays main window
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
-	
+	hInst = hInstance; // Store instance handle in our global variable
+
+
 	hWnd = CreateWindow(
-		"PhonicsEngineWindow",
+		"PhonicsEngine",
 		"Phonics Engine",
 		WS_OVERLAPPEDWINDOW & ~WS_MAXIMIZEBOX & ~WS_THICKFRAME,
 		CW_USEDEFAULT,
@@ -94,8 +88,17 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 		SCREENHEIGHT,
 		NULL, NULL,
 		hInstance, NULL);
+	
+	//ShowWindow( hWnd, SW_NORMAL );
 
-	ShowWindow( hWnd, SW_NORMAL );
+
+   if (!hWnd)
+   {
+      return FALSE;
+   }
+
+   ShowWindow(hWnd, nCmdShow);
+   UpdateWindow(hWnd);
 
 
 	hdc = GetDC( hWnd );

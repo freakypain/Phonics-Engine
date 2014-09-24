@@ -7,8 +7,7 @@
 
 
 Debug::Debug()
-{
-	
+{	
 	setConsole(); // Temp debug console visible
 }
 
@@ -43,28 +42,17 @@ void Debug::setConsole( )
 {
 	mShowConsole = true;
 
+	FILE *conin, *conout;
 	AllocConsole();
 	AttachConsole( GetCurrentProcessId() );
-	FILE* fOut;
-	freopen_s(&fOut, "conout$", "w", stdin);
-	fclose(fOut);
-
-	//HANDLE consoleHandle = GetStdHandle( STD_OUTPUT_HANDLE );
-
-
-	/*
-	DWORD cCharsWritten;
-	char* str = TEXT("enter game command");
-	WriteConsole(consoleHandle, str, strlen(str), &cCharsWritten, NULL);
-	char* command = malloc(100);
-	int charsRead = 0;
-	ReadConsole(consoleHandle, command, 100, &cCharsRead, NULL);*/
+	freopen_s(&conin, "conin$", "r", stdin);
+	freopen_s(&conout, "conout$", "w", stdout);
+	freopen_s(&conout, "conout$", "w", stderr);
 }
 
 void Debug::hideConsole()
 {
 	mShowConsole = false;
-
 }
 
 bool Debug::getConsole()
