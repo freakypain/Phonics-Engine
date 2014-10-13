@@ -3,6 +3,8 @@
 
 #include "../Light.hpp"
 
+
+
 class PointLight : public Light
 {
 	public:
@@ -10,10 +12,10 @@ class PointLight : public Light
 		PointLight( Colour colour, Vector3 position, float attentConst, float attenLinear, float attenQuadratic );
 		virtual ~PointLight();
 
-		float getAttenuation(float distance);
-		Vector3 getPosition() const; 
+		float getAttenuation( float distance );
+		Vector3 getPosition() const;
 		virtual Colour calcuatePrimitveLightAtPoint( Primitive& primitive, Vector3& intersectionPoint ); // Calucate Light Angle Primitive
-		virtual Colour calcuatePrimitveLightAtPoint( GameObject& gameObject, Vector3& intersectionPoint ); // Calucate Light Angle GameObject
+		//virtual Colour calcuatePrimitveLightAtPoint( GameObject& gameObject, Vector3& intersectionPoint ); // Calucate Light Angle GameObject
 
 	private:
 		Vector3 mPosition;
@@ -23,6 +25,7 @@ class PointLight : public Light
 		float mAttenuationQuadratic;
 
 };
+
 
 #endif //POINTLIGHT_H
 

@@ -4,6 +4,7 @@
 
 
 #include "Scene.hpp"
+#include "RenderPoint.hpp"
 
 class Hud;
 class Renderer;

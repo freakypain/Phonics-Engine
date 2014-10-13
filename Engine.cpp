@@ -52,26 +52,26 @@ void Engine::build()
 	//ShaderProgram * shaderPoint = new ShaderProgram("shaders/pointlight.vert", "shaders/pointLight.frag");
 
 	// Add Plane to the world
-	GameObject *  ground = new GameObject( "Ground", glm::vec3( 0, 1, 0 ) );
+	//GameObject *  ground = new GameObject( "Ground", glm::vec3( 0, 1, 0 ) );
 	//ground->setMesh( Mesh::load( "models/floor.obj" ) );
 	//ground->setTexture( Texture::load( "test.png" ) );
 
 	// Camera
 	// TODO fix camera to unique pointer
 	//std::unique_ptr<Camera> camera("Camera", glm::vec3(30, 40, 25));
-	camera = new Camera( "Camera", glm::vec3( 30, 40, 25) );
-    //camera->setBehaviour( new WASDBehaviour( camera, window ) );
-
-	
+	//camera = new Camera( "Camera", glm::vec3( 30, 40, 25) );
+    //camera->setBehaviour( new WASDBehaviour( camera ) );
+		
 
 	// Add to Universe
-	scene.add(camera);
+	//scene.add(camera);
   //  scene->add( camera );
 
 }
 
 void Engine::run()
 {
+	/*
 	running = true;
 	while ( running ) {
 		Time::update();
@@ -80,7 +80,10 @@ void Engine::run()
 			update( Time::step() );
 			draw();
 		}
-	}
+	}*/
+
+	update(Time::step());
+	draw();
 }
 
 void Engine::stop()
@@ -108,18 +111,17 @@ void Engine::control()
 
 void Engine::update( float step )
 {
-	//scene->update( step );
-	scene.update( step );
+//	scene.update( step );
 }
 
 void Engine::draw()
 {
 	//assert( window != 0 );
-	assert( renderer != 0 );
+	//assert( renderer != 0 );
 	//assert( scene != 0 );
 
 	//renderer->draw( scene );
-	hud->draw();
+	//hud->draw();
 
 	// TODO Fix window display renderer 
 	//window->display(); // swap colorbuffer to screen

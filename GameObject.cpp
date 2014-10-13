@@ -186,10 +186,11 @@ void GameObject::onCollision(  GameObject * otherGameObject )
 
 
 // TODO fix drawing function game object
+/*
 void GameObject::draw(Renderer * aRenderer, glm::mat4 parentTransform)
 {
 
-}
+}*/
 
 
 // TODO Fix intersect

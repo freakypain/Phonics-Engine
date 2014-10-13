@@ -10,10 +10,10 @@
 
 
 
-Camera::Camera( std::string aName, glm::vec3 aPosition ) :	GameObject(aName, aPosition )
+Camera::Camera( std::string name, glm::vec3 position ) : GameObject( name, position )
 {
-	glm::vec3 eye = aPosition;
-	glm::vec3 at ( aPosition.x, 0, aPosition.z+0.01 );
+	glm::vec3 eye = position;
+	glm::vec3 at( position.x, 0, position.z + 0.01 );
 	glm::vec3 up ( 0.0f, -1.0f, 0.0f );
 	transform = glm::inverse( glm::lookAt( eye, at, up ) );
 	projection = glm::perspective(  60.0f, 4.0f/3.0f, 0.1f, 100.0f  );
@@ -25,16 +25,25 @@ Camera::~Camera()
 }
 
 
-void Camera::draw( Renderer * renderer, glm::mat4 parentTransform )
-{
-	//std::cout << "Camera sets View " << std::endl << transform << std::endl;
-	renderer->setProjection( projection ); // model = cam to worldspace so inverse for universe->camspace
-	renderer->setView( glm::inverse( transform ) ); // model = cam to worldspace so inverse for universe->camspace
-}
-
-
 // TODO Fix Intersection of Gameobjects
 bool Camera::intersect( Ray& ray, float& distance )
 {	
-	return false;
+
+	std::cout << distance << std::endl;
+
+	bool intersect = false;
+
+	float dotPlane = Vector3::dot(mNormal, ray.getDirection());
+
+	if (dotPlane < 0)
+	{
+		float distToIntersect = -(Vector3::dot(ray.getOrigin(), mNormal) + mDistance) / dotPlane;
+		if (distToIntersect < MAXDISTANCE)
+		{
+			distance = distToIntersect;
+			intersect = true;
+		}
+	}
+
+	return intersect;
 }

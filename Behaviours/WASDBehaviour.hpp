@@ -15,7 +15,7 @@ class WASDBehaviour : public Behaviour
 
 	public:
 		//WASDBehaviour( GameObject * aParent, sf::Window * aWindow );
-		WASDBehaviour(GameObject * aParent);
+		WASDBehaviour(GameObject * parent);
 		virtual ~WASDBehaviour();
 
 		virtual void update( float step );

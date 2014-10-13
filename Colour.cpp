@@ -1,7 +1,14 @@
 #include "Colour.hpp"
 
-Colour::Colour( void ) : r( 0 ), g( 0 ), b( 0 ) {};
-Colour::Colour( float r, float g, float b ) : r( r ), g( g ), b( b ) {};
+Colour::Colour(  ) : r( 0 ), g( 0 ), b( 0 )
+{
+
+}
+
+Colour::Colour( float r, float g, float b ) : r( r ), g( g ), b( b ) 
+{
+
+}
 
 Colour::Colour( const Colour& v )
 {
@@ -13,7 +20,7 @@ Colour::~Colour(void)
 
 }
 
-Colour Colour::	operator -  (const Colour& rhs )
+Colour Colour::	operator -  ( const Colour& rhs )
 {
 	return Colour::subtract( *this, rhs );
 }
@@ -82,19 +89,19 @@ bool Colour:: operator == ( const Colour& rhs )
 
 Colour Colour::add( const Colour& lhs, const Colour& rhs )
 {
-	return Colour(lhs.r + rhs.r, lhs.g + rhs.g, lhs.b + rhs.b);
+	return Colour( lhs.r + rhs.r, lhs.g + rhs.g, lhs.b + rhs.b );
 }
 
 Colour Colour::subtract( const Colour& lhs, const Colour& rhs )
 {
-	return Colour(lhs.r - rhs.r, lhs.g - rhs.g, lhs.b - rhs.b);
+	return Colour( lhs.r - rhs.r, lhs.g - rhs.g, lhs.b - rhs.b );
 }
 
 Pixel Colour::createPixel()
 {
-	int red = (int)(r * 256);
-	int green = (int)(g * 256);
-	int blue = (int)(b * 256);
+	int red = (int)( r * 256 );
+	int green = (int)( g * 256 );
+	int blue = (int)( b * 256 );
 
 	if (red > 255)		red = 255;
 	if (green > 255)	green = 255;

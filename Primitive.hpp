@@ -15,7 +15,6 @@ class Primitive
 		bool getShadow();
 
 		Material* getMaterial();
-
 		virtual Colour getColour( Vector3& ) const;
 		virtual Vector3 getNormal( Vector3& position ) = 0;
 		virtual bool intersect( Ray& ray, float& distance ) = 0;
@@ -25,5 +24,5 @@ class Primitive
 		bool mCastShadows;
 };
 
-#endif
+#endif // PRIMITIVE_H
 

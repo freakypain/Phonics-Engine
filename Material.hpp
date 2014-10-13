@@ -1,23 +1,18 @@
 #ifndef MATERIAL_H
 #define MATERIAL_H
 
-
 #include "Colour.hpp"
+
 
 struct Material
 {
-	Colour diffuse;
-	float diffuseFactor;
-	float reflection;
-	float specular;
+	Colour mDiffuse;
+	float mDiffuseFactor;
+	float mReflection;
+	float mSpecular;
 
-	// Default Constructor
-	Material(Colour diffuse = Colour(), float refulection = 0.5f, float diffuseFac = 0.5f, float specular = 1.5f) 
-			: diffuse(diffuse), diffuseFactor(diffuseFac), specular(specular)
-	{
-
-	}
-
+	Material(Colour diffuse = Colour(), float diffuseFac = 0.5f, float reflection = 0.5f, float specular = 0.5f);
+	~Material();
 };
 
 #endif

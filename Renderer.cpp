@@ -15,17 +15,116 @@
 
 
 
-Renderer::Renderer( RenderPoint* renderPoint ) :  program( 0 )
+Renderer::Renderer(RenderPoint* renderPoint)
 {
-	// TODO fix the new scene and put it in the world
 	mScene = new Scene();
-	mRenderPoint = renderPoint;
+	mRenderTarget = renderPoint;
 }
 
 Renderer::~Renderer()
 {
-	delete program;
 	delete mScene;
+}
+
+
+
+// Return intersection point
+Colour Renderer::sendRay(Ray& ray, int traceDepth)
+{
+	if (traceDepth > MAXTRACEDEPTH)
+		return Colour();
+
+	Colour		litColour, reflectedColour;
+	float		distanceToIntersect = MAXDISTANCE;	// Ignore primitives beyond this
+	Vector3		intersectionPoint;
+	Primitive*	nearestPrimitive = 0;
+
+	nearestPrimitive = mScene->getFirstPrimitive(ray, distanceToIntersect);
+
+	if (!nearestPrimitive)
+		return Colour();
+
+	else
+	{
+		// Hit a primitive, calculate lighting
+		intersectionPoint = ray.getOrigin() + ray.getDirection() * distanceToIntersect;
+		litColour = mScene->calcuatePrimiateLightingAtPoint((*nearestPrimitive), intersectionPoint, ray.getDirection());
+
+		// Calculate reflection
+		float reflectionFactor = nearestPrimitive->getMaterial()->mReflection;
+
+		if (reflectionFactor > 0.0f)
+		{
+			Vector3 normal = nearestPrimitive->getNormal(intersectionPoint);
+			Vector3 reflected = ray.getDirection() - normal * (2.0f * Vector3::dot(ray.getDirection(), normal));
+
+			Ray reflectedRay = Ray(intersectionPoint + reflected * 0.0001f, reflected);
+			reflectedColour = sendRay(reflectedRay, traceDepth + 1) * reflectionFactor;
+		}
+
+		return litColour + reflectedColour;
+	}
+}
+
+// Draw one line at the time
+bool Renderer::draw()
+{
+	// Render remaining horizontal lines
+	for (int y = mNextLine; y < mRenderTarget->getHeight(); y++)
+	{
+		// Start interpolating from left side of view plane
+		mCurrentX = mViewPlaneX1;
+
+		// Render all pixels on the current line
+		for (int x = 0; x < mRenderTarget->getWidth(); x++)
+		{
+			// Create a ray from the origin towards current 'pixel'
+			Vector3 direction = Vector3(mCurrentX, mCurrentY, 0) - mEyePosition;
+			direction.normalize();
+			Ray ray(mEyePosition, direction);
+
+			// Find the closest primitive and its distance/colour
+			Colour pixelColour = sendRay(ray, 1);
+
+			// Convert and pack RGB values into a pixel for the buffer
+			mRenderTarget->setPixel(mBufferIndex++, pixelColour.createPixel());
+
+			// Move to next 'pixel' on the view plane
+			mCurrentX += mDeltaX;
+		}
+
+		// Move to next line of 'pixels' on the view plane
+		mCurrentY += mDeltaY;
+
+		// Note which line should start the next loop
+		mNextLine = y + 1;
+
+		// Exit briefly to allow Draw() to paint the screen
+		return false;
+	}
+
+	return true;
+}
+
+
+// Reset count and buffer pixel index. Setup camera. Defines view plane and x/y delate values for interpolation
+void Renderer::initialize()
+{
+	// Reset current line and buffer (current pixel) index
+	mNextLine = mBufferIndex = 0;
+
+	// Camera/view position from which rays will be cast
+	mEyePosition = Vector3(0, 0, -5);
+
+	// View plane in world coordinates (based on screen aspect ratio - 16:10)
+	mViewPlaneX1 = -8;
+	mViewPlaneX2 = 8;
+	mViewPlaneY1 = mCurrentY = 5;
+	mViewPlaneY2 = -5;
+
+	// Delta values used for interpolating along the view plane
+	mDeltaX = (mViewPlaneX2 - mViewPlaneX1) / mRenderTarget->getWidth();
+	mDeltaY = (mViewPlaneY2 - mViewPlaneY1) / mRenderTarget->getHeight();
 }
 
 // TODO Fix set Shaders
@@ -72,116 +171,18 @@ ShaderProgram * Renderer::getShaderProgram()
     return program;
 }
 
-Colour Renderer::traceRay( Ray& ray, int rayDepth )
-{
-	if ( rayDepth > MAXTRACEDEPTH )
-		return	Colour();
-
-	Colour colourReflect, colourLitPrim;
-	float disToIntersect = MAXDISTANCE;
-	Vector3 interSectPoint;
-	// Here comes game objects
-	GameObject* nearestGameObject = 0; // Test version
-	Primitive* nearestPrimitive = 0;
-
-
-	nearestPrimitive = mScene->getFirstPrimitive( ray, disToIntersect );
-
-	if ( !nearestPrimitive ){
-		return Colour();
-	} 
-	else {
-		interSectPoint = ray.getOrigin() = ray.getDirection() * disToIntersect;
-		colourLitPrim = mScene->calcuatePrimiateLightingAtPoint((*nearestPrimitive), interSectPoint, ray.getDirection() ); // Lit nearest Primitive
-		//colourLitGameObject = mScene->calcuatePrimiateLightingAtPoint((*nearestPrimitive), interSectPoint, ray.getDirection()); // Lit nearest Primitive
-
-		// Calculate reflections
-		float reflection = nearestPrimitive->getMaterial()->reflection;
-
-		if ( reflection > 0.0f )
-		{
-			Vector3 normal = nearestPrimitive->getNormal( interSectPoint );
-			Vector3 reflect = ray.getDirection() - normal * ( 2.0f * Vector3::dot( ray.getDirection(), normal ) );
-
-			Ray reflectRay = Ray( interSectPoint + reflect * 0.001f, reflect );
-			colourReflect = traceRay( reflectRay, rayDepth + 1 ) * reflection;
-		}
-
-		return colourLitPrim + colourReflect;
-	}
-}
-
-bool Renderer::draw()
-{
-	// Render horizontal lines
-	for ( int y = mNextLine; y < mRenderPoint->getHeight(); y++ )
-	{
-		// Start interpolating from left side of view plane
-		mCurrentX = mViewPlaneX1;
-
-		// Render pixels on current line
-		for ( int x = 0; x < mRenderPoint->getWidth(); x++ )
-		{
-			// Create ray to current pixel
-			Vector3 direction = Vector3( mCurrentX, mCurrentY, 0 ) - mEyePosition;
-			direction.normalize();
-			Ray ray( mEyePosition, direction );
-
-			// Find the cloesest primitave and its colour
-			Colour pixelColour = traceRay(ray, 1);
-			
-			// Convert and pack rgb values into pixel for the buffer
-			mRenderPoint->setPixel( mBufferIndex++, pixelColour.createPixel() );
-			
-			// Move to next pixel
-			mCurrentX += mDeltaX;
-		}
-
-		// Move to next line of pixels on the view plane
-		mCurrentY += mDeltaY;
-
-		// Start next line
-		mNextLine = y + 1;
-
-		// exit to draw the screen
-		return false;
-	}
-
-	return true;
-}
 
 Scene* Renderer::getScene()
 {
 	return mScene;
 }
 
-// Reset count and buffer pixel index. Setup camera. Defines view plane and x/y delate values for interpolation
-void Renderer::initialize()
-{
-	// Reset current line and buffer index
-	mNextLine = mBufferIndex = 0;
-
-	// Camera/view position from which rays will be cast
-	mEyePosition = Vector3(0, 0, -5);
-
-	// View plane in world coordinates (based on screen aspect ratio - 16:10)
-	mViewPlaneX1 = -8;
-	mViewPlaneX2 = 8;
-	mViewPlaneY1 = mCurrentY = 5;
-	mViewPlaneY2 = -5;
-
-	// Delta values used for interpolating along the view plane
-	mDeltaX = ( mViewPlaneX2 - mViewPlaneX1 ) / mRenderPoint->getWidth();
-	mDeltaY = ( mViewPlaneY2 - mViewPlaneY1 ) / mRenderPoint->getHeight();
-}
-
-
-
 // TODO Fix DRAW to render GameObjects
+/*
 void Renderer::draw(GameObject * aWorld)
 {
 
-}
+}*/
 /*
 
 void Renderer::draw( GameObject * aWorld )
@@ -200,10 +201,11 @@ void Renderer::draw( GameObject * aWorld )
 }*/
 
 // TODO FIX Renderer
+/*
 void Renderer::draw(unsigned int size, GLuint indicesBuffer, GLuint verticesBuffer, GLuint normalsBuffer, GLuint uvsBuffer) // size is count of indices
 {
 	
-}
+}*/
 /*
 void Renderer::draw( unsigned int size, GLuint indicesBuffer, GLuint verticesBuffer, GLuint normalsBuffer, GLuint uvsBuffer ) // size is count of indices
 {

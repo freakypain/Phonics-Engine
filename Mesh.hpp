@@ -24,7 +24,9 @@ class Mesh
 		Mesh();
 		virtual ~Mesh();
 
-		static Mesh * load( const char * fileName );
+		// TODO fix it static
+		//static Mesh * load( const char * fileName ); 
+		Mesh * load(const char * fileName);
 
 		//std::vector<glm::vec3> getVertices();
 
@@ -32,14 +34,12 @@ class Mesh
 
 		void draw( Renderer * aRenderer );
 
-		const int getIndicies() const;
-		const int getVertices() const;
-		const unsigned int getFaces() const;
-		const float getPositions() const;
-		const float getNormals() const;
-
-		 
-
+		int getIndicies() const;
+		int getVertices() const;
+		const unsigned int* getFaces() const;
+		const float* getPositions() const ;
+		const float* getNormals() const;
+		
 	private:
 		std::vector<Face> mFaces;
 		std::vector<Vector3> mPositions;

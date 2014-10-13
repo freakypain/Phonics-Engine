@@ -13,7 +13,7 @@ Sphere::~Sphere()
 
 }
 
-
+// Return Center of primitive
 Vector3& Sphere::getCenter()
 {
 	return mCenter;
@@ -31,6 +31,7 @@ bool Sphere::intersect( Ray& ray, float& distance )
 
 	Vector3 l = mCenter - ray.getOrigin();
 	float scalar = Vector3::dot( ray.getDirection(), l );
+
 	float f = mRadiusSquared - Vector3::dot( l, l ) + ( scalar * scalar );
 
 	if ( f < 0.0f )
@@ -38,7 +39,7 @@ bool Sphere::intersect( Ray& ray, float& distance )
 		return intersect;
 	}
 	else{
-		float a = f - sqrtf(f);
+		float a = scalar - sqrtf(f);
 
 		if ( a > 0.1f && a < MAXDISTANCE )
 		{

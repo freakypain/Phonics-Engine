@@ -1,8 +1,6 @@
 #include "PointLight.hpp"
 #include "../Vector3.hpp"
 
-
-
 PointLight::PointLight( Colour colour, Vector3 position )	: Light( LIGHT_POINT, colour ), mPosition( position ),	mAttenuationConstant( 0.0f ),	mAttenuationLinear( 1.0f ), mAttenuationQuadratic( 0.0f )
 {
 }
@@ -36,15 +34,16 @@ float PointLight::getAttenuation( float distance )
 	}
 }
 
-Colour PointLight::calcuatePrimitveLightAtPoint(Primitive& primitive, Vector3& intersectionPoint)
+Colour PointLight::calcuatePrimitveLightAtPoint( Primitive& primitive, Vector3& intersectionPoint )
 {
 	return Colour();
 }
 
-Colour PointLight::calcuatePrimitveLightAtPoint(GameObject& gameObject, Vector3& intersectionPoint)
+/*
+Colour PointLight::calcuatePrimitveLightAtPoint( GameObject& gameObject, Vector3& intersectionPoint )
 {
 	return Colour();
-}
+}*/
 
 
 

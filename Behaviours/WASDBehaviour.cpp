@@ -1,15 +1,44 @@
 // TODO Fix WASDBehaviour
 
+// TODO Make it linux compatible
+#include "Windows.h" 
+#include <iostream>
 #include "../stdafx.h"
+
 
 #include "WASDBehaviour.hpp"
 #include "../GameObject.hpp"
 
-WASDBehaviour::WASDBehaviour( GameObject * aParent ):	Behaviour( aParent ) {}
-WASDBehaviour::~WASDBehaviour(){}
+WASDBehaviour::WASDBehaviour( GameObject * parent ):	Behaviour( parent ) 
+{
+
+}
+WASDBehaviour::~WASDBehaviour()
+{
+
+}
 
 void WASDBehaviour::update( float step )
 {
+	if (GetAsyncKeyState('W'))
+	{
+		parent->translate(glm::vec3(0.0f, 0.0f, -step * 30));
+	}
+	else if (GetAsyncKeyState('S'))
+	{
+		parent->translate(glm::vec3(0.0f, 0.0f, step * 30));
+	}
+	else if (GetAsyncKeyState('A'))
+	{
+		parent->translate(glm::vec3(-step * 60, 0.0f, 0.0f));
+
+	}
+	else if (GetAsyncKeyState('D'))
+	{
+		parent->translate(glm::vec3(step * 60, 0.0f, 0.0f));
+	}
+
+
 	/*
 
 	glm::ivec2 windowCenter = glm::ivec2( window->getSize().x/2, window->getSize().y/2 );

@@ -6,12 +6,13 @@
 
 
 class Sphere : public Primitive{
+
 	public:
 		Sphere( Material material, Vector3& center, float radius, bool shadow );
 		~Sphere();
 
-		Vector3&	getCenter();					 //{ return mCenter; };
-		Vector3		getNormal( Vector3& position ); //{ return (position - mCenter) * mOneOverRadius; };
+		Vector3&	getCenter();				
+		Vector3		getNormal( Vector3& position );
 
 		bool intersect( Ray& ray, float& distance );
 
@@ -20,6 +21,7 @@ class Sphere : public Primitive{
 		float mRadius;
 		float mRadiusSquared;
 		float mOneOverRadius;
+
 
 };
 

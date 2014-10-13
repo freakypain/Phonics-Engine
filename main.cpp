@@ -8,7 +8,7 @@
 
 
 //int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
-int APIENTRY _tWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPTSTR    lpCmdLine, _In_ int nCmdShow = true)
+int APIENTRY _tWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPTSTR lpCmdLine, _In_ int nCmdShow)
 { 
 	MSG	msg = MSG();
 
@@ -27,7 +27,8 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstanc
 	}
 
 	// Perform application initialization:
-	if (!InitInstance(hInstance, nCmdShow)) return FALSE;
+	if (!InitInstance(hInstance, nCmdShow)) 
+		return FALSE;
 
 	// Main execution loop
 	while (msg.message != WM_QUIT)
@@ -43,7 +44,11 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstanc
 				DispatchMessage(&msg);
 			}
 
+			// Bitmap displayed
 			 draw();
+
+			 // Update world
+			 engine.run();
 		}
 
 	}
@@ -68,15 +73,10 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 	return RegisterClass(&wc);
 }
 
-
-//Forward declaration of the WndProc function
-LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
-
 // Saves instance handle and creates/displays main window
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
 	hInst = hInstance; // Store instance handle in our global variable
-
 
 	hWnd = CreateWindow(
 		"PhonicsEngine",
@@ -88,19 +88,14 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 		SCREENHEIGHT,
 		NULL, NULL,
 		hInstance, NULL);
-	
-	//ShowWindow( hWnd, SW_NORMAL );
 
 
    if (!hWnd)
-   {
-      return FALSE;
-   }
-
+		return FALSE;
+   
    ShowWindow(hWnd, nCmdShow);
    UpdateWindow(hWnd);
-
-
+   
 	hdc = GetDC( hWnd );
 
 	// Initialize raw pixel buffer
@@ -110,7 +105,6 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	// Initialize RayTracer
 	renderer = new Renderer( renderPoint );
 	
-
 	return true;
 }
 
@@ -130,7 +124,7 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam 
 	return 0;
 }
 
-// 
+// Update the bitmap displayed on the screen
 void draw()
 {
 	if ( renderPoint->getBuffer() )

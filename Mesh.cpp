@@ -75,18 +75,194 @@ Mesh * Mesh::load(const char * filename)
 
 Mesh * Mesh::load( const char * filename )
 {
-	/*
+
 	std::ifstream fstream;
 	fstream.open( filename, std::ios_base::in );
-	if (!fstream.is_open())
-	{
+	if (!fstream.is_open())	
+		std::cout << "Failed to load Mesh" << filename << std::endl;
 
-	}*/
+	// Clear maps
+	mPositions.clear();
+	mNormals.clear();
+	mFaces.clear();
 
+	char *delims = " \n\r";
+	char line[500] = { 0 };
+
+	std::vector<Vector3> verts;
+	std::vector<Vector3> norms;
 	
+	std::map<faceVert, int, vertLess> uniqueVertices;
+	unsigned int vertCounter = 0;
 
+	while ( fstream.good() )
+	{
+		memset( (void*)line, 0, 500 );
+		fstream.getline( line, 500 );
+		
+		if ( fstream.eof() )
+			break;
+
+		char *nextToken = NULL;
+		char *token = strtok_s(line, delims, &nextToken);
+		if ( token == NULL || token[0] == '#' || token[0] == '$' )
+			continue;
+
+
+		if ( strcmp(token, "v") == 0 ) 
+		{
+			float x = 0, y = 0, z = 0, w = 1;
+			sscanf_s(line + 2, "%f %f %f %f", &x, &y, &z, &w);
+			verts.push_back( Vector3( x / w, y / w, z / w ) );
+
+		} 
+		else if ( strcmp(token, "vn") == 0 )
+		{
+			float x = 0, y = 0, z = 0;
+			sscanf_s(line + 3, "%f %f %f", &x, &y, &z);
+			norms.push_back( Vector3( x, y, z ) );
+		}
+		else if ( strcmp( token, "s" ) == 0 ) 
+		{
+		
+		}
+
+		else if ( strcmp( token, "f" ) == 0 ) {
+			std::vector<int> vindices;
+			std::vector<int> nindices;
+			std::vector<int> tindices;
+
+			// fill out a triangle from the line, it could have 3 or 4 edges
+			char *lineptr = line + 2;
+
+			while ( lineptr[0] != 0 ) 
+			{
+				while ( lineptr[0] == ' ' ) 
+					++lineptr;
+
+				int vi = 0, ni = 0, ti = 0;
+
+				if ( sscanf_s(lineptr, "%d/%d/%d", &vi, &ni, &ti) == 3 )
+				{
+					vindices.push_back(vi - 1);
+					nindices.push_back(ni - 1);
+					tindices.push_back(ti - 1);
+				}
+				else{
+					if ( sscanf_s(lineptr, "%d//%d", &vi, &ni) == 2 )
+					{
+						vindices.push_back(vi - 1);
+						nindices.push_back(ni - 1);
+					}
+					else{
+						if ( sscanf_s(lineptr, "%d/%d", &vi, &ti) == 2 )
+						{
+							vindices.push_back( vi - 1 );
+							tindices.push_back( ti - 1 );
+						}
+						else{
+							if ( sscanf_s(lineptr, "%d", &vi) == 1 ) 
+							{
+								vindices.push_back( vi - 1 );
+							}
+						}
+					}
+				}
+				while ( lineptr[0] != ' ' && lineptr[0] != 0 ) 
+						++lineptr;
+			}
+
+
+			for ( size_t i = 1; i<vindices.size() - 1; ++i ) 
+			{
+				Face face;
+				faceVert tri;
+				tri.vert = vindices[0];
+
+				if ( !nindices.empty() )
+					tri.norm = nindices[0];
+
+				if ( !tindices.empty() )
+					tri.norm = tindices[0];
+
+				if ( uniqueVertices.count(tri) == 0 )
+					uniqueVertices[tri] = vertCounter++;
+
+				face.a = uniqueVertices[tri];
+				tri.vert = vindices[i];
+
+				if ( !nindices.empty() )
+					tri.norm = nindices[i];
+
+				if ( !tindices.empty() )
+					tri.norm = tindices[i];
+
+				if ( uniqueVertices.count(tri) == 0 )
+					uniqueVertices[tri] = vertCounter++;
+
+				face.b = uniqueVertices[tri];
+				tri.vert = vindices[i + 1];
+
+				if ( !nindices.empty() )
+					tri.norm = nindices[i + 1];
+
+				if ( !tindices.empty() )
+					tri.norm = tindices[i + 1];
+
+				if ( uniqueVertices.count(tri) == 0 )
+					uniqueVertices[tri] = vertCounter++;
+
+				face.c = uniqueVertices[tri];				
+				mFaces.push_back(face);
+			}
+		}
+
+		// Close stream
+		fstream.close();
+
+		// Resize instead of reserve
+		mPositions.resize( vertCounter );
+		if (norms.size() > 0)
+			mNormals.resize( vertCounter );
+		
+		
+
+		std::map<faceVert, int, vertLess>::iterator iter;
+		for ( iter = uniqueVertices.begin(); iter != uniqueVertices.end(); ++iter ) 
+		{
+			mPositions[iter->second] = verts[iter->first.vert];
+
+			if (norms.size() > 0) 
+				mNormals[iter->second] = norms[iter->first.norm];			
+		}
+	}
 
 	return 0;
+}
+
+int Mesh::getIndicies() const
+{
+	return (int)mFaces.size() * 3;
+}
+
+int Mesh::getVertices() const
+{
+	return (int)mPositions.size();
+}
+
+const unsigned int* Mesh::getFaces() const
+{
+	return ( const unsigned int* )&mFaces[0];
+}
+
+const float* Mesh::getPositions() const
+{
+	return (const float*)&mPositions[0];
+}
+
+const float* Mesh::getNormals() const
+{
+	return (const float*)&mNormals[0];
 }
 
 

@@ -56,7 +56,7 @@ void RenderPoint::clear( Pixel colour )
 {
 	int pixelCount = mWidth * mHeight;
 
-	for (int i = 0; i < pixelCount; i++)	
+	for ( int i = 0; i < pixelCount; i++ )	
 		mBuffer[i] = colour;
 	
 }

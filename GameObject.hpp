@@ -67,9 +67,9 @@ class GameObject
 
 		virtual void update( float step );
 		virtual void onCollision(  GameObject * otherGameObject );
-		virtual void draw( Renderer * renderer, glm::mat4 parentTransform = glm::mat4(1) );
+//		virtual void draw( Renderer * renderer, glm::mat4 parentTransform = glm::mat4(1) );
 		virtual bool intersect( Ray& ray, float& distance );
-		void draw( );
+//		void draw( );
 
 		void add(GameObject * child);
 };

@@ -24,7 +24,7 @@ class Colour{
 		Colour  operator -  ( const Colour& rhs );	// Subtraction
 
 		static Colour add( const Colour& lhs, const Colour& rhs );
-		static Colour subtract(const Colour& lhs, const Colour& rhs);
+		static Colour subtract( const Colour& lhs, const Colour& rhs );
 
 		Pixel createPixel();
 
@@ -32,9 +32,6 @@ class Colour{
 
 	private:
 		void copy( const Colour& c );
-
 };
-
-
 #endif // COLOUR_H
 
