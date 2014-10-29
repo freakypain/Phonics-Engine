@@ -19,9 +19,6 @@
     <Filter Include="Header Files\Behaviours">
       <UniqueIdentifier>{616f899d-8b78-4f2d-a7ba-39a53c83db11}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Shaders">
-      <UniqueIdentifier>{dc1ad04b-5928-4258-b50b-eb8d446d26ae}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Lights">
       <UniqueIdentifier>{b5444137-1dfe-408b-9ddf-12cccffdab14}</UniqueIdentifier>
     </Filter>
@@ -197,13 +194,5 @@
     <ClInclude Include="Primitives\Plane.hpp">
       <Filter>Source Files\Primitives</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="shaders\pointlight.frag">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
-    <None Include="shaders\pointlight.vert">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
   </ItemGroup>
 </Project>
