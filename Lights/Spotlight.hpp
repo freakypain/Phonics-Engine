@@ -18,7 +18,6 @@ class Spotlight : public Light{
 		float getAttenuation(float distance);
 		Vector3 getPosition() const;
 
-		void draw(Renderer * renderer, glm::mat4 parentTransform = glm::mat4(1));
 		virtual Colour calcuatePrimitveLightAtPoint(Primitive& primitive, Vector3& intersectionPoint); // Calucate Light Angle Primitive
 		virtual Colour calcuatePrimitveLightAtPoint(GameObject& gameObject, Vector3& intersectionPoint); // Calucate Light Angle GameObject
 

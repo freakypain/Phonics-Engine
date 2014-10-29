@@ -36,7 +36,8 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstanc
 		renderer->initialize();
 
 		// Render, breaking out for messages/drawing		
-		while (!renderer->draw())
+		//while (!renderer->draw()
+		while (!engine.run( renderer ))
 		{
 			if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
 			{
@@ -45,10 +46,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstanc
 			}
 
 			// Bitmap displayed
-			 draw();
-
-			 // Update world
-			 engine.run();
+			 draw();	
 		}
 
 	}

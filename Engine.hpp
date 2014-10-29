@@ -19,7 +19,7 @@ class Engine
 	private: // data members
 		Hud * hud;
 		Renderer * renderer;
-		Scene scene;
+		Scene mScene;
 		Camera * camera;
 		Light * light;
 		bool running;
@@ -29,13 +29,12 @@ class Engine
 		virtual ~Engine();
 
 		void build();
-		void run();
+		bool run( Renderer* renderer );
 		void stop();
 
 	private:
 		void control();
-		void update( float step );
-		void draw();
+		bool draw( Renderer* renderer );
 		void drawHud();
 };
 

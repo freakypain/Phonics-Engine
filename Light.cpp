@@ -20,12 +20,6 @@ Light::~Light()
 	//dtor
 }
 
-void Light::draw( Renderer * aRenderer, glm::mat4 parentTransform )
-{
-	//aRenderer->setLight( getLocation() );
-	std::cout << "Wrong Light Renderer" << std::endl;
-}
-
 Colour Light::getColour()
 {
 	return mColour;

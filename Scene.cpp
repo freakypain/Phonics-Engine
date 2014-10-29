@@ -21,14 +21,16 @@
 
 Scene::Scene(std::string aName) : GameObject(aName)
 {
-	//ctor
-	// TODO make it universal
-	setupScene();
+	//delete[] mPrimitives;
+	//delete[] mLights;
 }
 
 Scene::~Scene()
 {
 	//dtor
+
+	// Remove all objects from scene
+
 }
 
 // Update scene
@@ -47,11 +49,7 @@ void Scene::draw( Renderer * renderer )
 	GameObject::draw( renderer ); // draw children Engine Objects
 }*/
 
-// Return primitives
-int Scene::getPrimitiveCount()
-{
-	return mPrimitives.size();
-}
+
 
 // Return Number of primitives
 Primitive* Scene::getPrimitive(int i)
@@ -86,31 +84,19 @@ Primitive* Scene::getFirstPrimitive(Ray& ray, float& distanceToIntersect) const
 	return nearestPrimitive;
 }
 
-//Calculates  effect of light on a primitive & GameObject at a given point
-/*
-GameObject* Scene::getFirstGameObject( Ray& ray, float& distanceToIntersect )
-{
-	GameObject* closestGameObject = 0;
-	float distance = MAXDISTANCE;
-	
-	//for (std::vector<GameObject*>::iterator g = children.begin(); g != children.end(); ++g)
-	for (std::vector<GameObject*>::iterator g = children.begin(); g != children.end(); ++g)
-	{
-		// TODO Fix value to be dynamic
-		GameObject* currentGameObject = mGameObjects[0]; // Testing (Values needs to be G)
+void Scene::prepare(){
+	for ( std::vector< GameObject * >::iterator i = children.begin(); i != children.end(); ++i ){	
+		// Set lights
+		if ( ( (GameObject *)* i)->getLight() ) { 
+			mLights.push_back( ( ( GameObject *)* i)->getLight() ); 
+		}
 
-		if ( currentGameObject->intersect( ray, distance ) )
-		{
-			if ( distance < distanceToIntersect && distance > 0 )
-			{
-				distanceToIntersect = distance;
-				closestGameObject = currentGameObject;
-			}
-		}		
+		// Set Primitives
+		if (((GameObject *)* i)->getPrimitive()) {
+			mPrimitives.push_back( ( ( GameObject *)* i)->getPrimitive() );
+		}
 	}
-
-	return closestGameObject;
-}*/
+}
 
 Colour Scene::calcuatePrimiateLightingAtPoint( Primitive& primitive, Vector3& intersecPoint, Vector3 rayDirection )
 {
@@ -187,23 +173,4 @@ void Scene::checkCollision(){
             }
         }
     }
-}
-
-// Temp Setup Scene
-void Scene::setupScene()
-{
-	// Top light
-	mLights.push_back( new PointLight( Colour( 1.0f, 1.0f, 1.0f ), Vector3( 5.0f, 25.0f, 0.0f ) ) );
-
-	// Red sphere
-	mPrimitives.push_back( new Sphere( Material( Colour( 1.0f, 0.0f, 0.0f ), 0.6f, 0.0f, 1.0f ),	Vector3( 7.5f, 2.0f, 5.0f ), 3.0f, true ) );
-
-	// Mirror sphere
-	mPrimitives.push_back( new Sphere( Material( Colour( 0.0f, 0.0f, 1.0f ), 0.2f, 1.0f, 0.0f ), Vector3( -7.5f, 2.0f, 5.0f ), 3.0f, true ) );
-
-	// Rear Plane
-	mPrimitives.push_back( new Plane( Material( Colour( 0.0f, 0.0f, 0.2f ), 1.0f, 0.0f, 0.2f ),Vector3( 0, 0, -1 ), 10.0f, false ) );
-
-	// Floor Plane
-	mPrimitives.push_back( new Plane( Material( Colour( 0.0f, 0.0f, 0.2f ), 1.0f, 1.0f, 0.2f ), Vector3( 0, 1, 0 ), 2.0f, false ) );
 }

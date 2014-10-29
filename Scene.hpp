@@ -20,19 +20,17 @@ class Scene : public GameObject
 
 		void update( float step );
 		void checkCollision();
-//		virtual void draw( Renderer * renderer );
+		void prepare();
+
 		Primitive* getFirstPrimitive( Ray& ray, float& distanceToIntersect ) const;
-	//	GameObject* getFirstGameObject( Ray& ray, float& distanceToIntersect );
 		Colour calcuatePrimiateLightingAtPoint( Primitive& primitive, Vector3& intersecPoint, Vector3 rayDirection );
+	
 
 		int getPrimitiveCount();
 		Primitive* getPrimitive(int i);
 
 	private:
-		void setupScene();
-
 		std::vector<Primitive*> mPrimitives;
-//		std::vector<GameObject*> mGameObjects;
 		std::vector<Light*> mLights; 
 };
 

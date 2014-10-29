@@ -3,17 +3,18 @@
 
 #include <glm.hpp>
 #include <vector>
+#include "Primitive.hpp"
+
 
 class Vector3;
 class Transform;
 class Collider;
 class Renderer;
 class Mesh;
-class Texture;
 class Behaviour;
-class ShaderProgram;
 class Light;
 class Ray;
+class Light;
 
 class GameObject
 {
@@ -23,13 +24,13 @@ class GameObject
 		Behaviour * behaviour;
 		Collider * collider;
 		Mesh * mesh;
-		Texture * mTexture;
-        ShaderProgram * shader;
-        Light * light;
+        Light * mLight;
 		Ray * ray;
+		Primitive * mPrimitive;
         float startTime;
         bool adding;
-		std::vector<GameObject *> children;
+
+		std::vector<GameObject*> children;
 
 	public:
 		GameObject( std::string aName = "", glm::vec3 aPosition = glm::vec3( 0.0f, 0.0f, 0.0f ));
@@ -48,8 +49,6 @@ class GameObject
 		bool hasCollider( );
 
 		void setBehaviour( Behaviour * aBehaviour );
-		void setShader( ShaderProgram * aShader );
-		void setTexture( Texture * texture );
 
 		Behaviour * getBehaviour( );
 		void removeBehaviour( );
@@ -59,10 +58,13 @@ class GameObject
 		void setTransform( glm::mat4 aTransform );
 		void setLocation( glm::vec3 aLocation );
 		void setMesh( Mesh * aMesh );
+		void setPrimitive( Primitive * primitive );
 		Mesh * getMesh();
+		Primitive * getPrimitive();
+		std::vector<GameObject*> getGameObjects();
 		void makeQuad(int width, int height);
 
-		void setLight(Light * aLight, ShaderProgram * aShader);
+		void setLight(Light * light);
 		Light * getLight();
 
 		virtual void update( float step );
@@ -71,7 +73,7 @@ class GameObject
 		virtual bool intersect( Ray& ray, float& distance );
 //		void draw( );
 
-		void add(GameObject * child);
+		void add( GameObject * child );
 };
 
 #endif // GAMEOBJECT_H

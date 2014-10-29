@@ -27,9 +27,8 @@ class Light
 		LightType getType();
 		Colour getColour();
 
-		virtual void draw( Renderer * aRenderer, glm::mat4 parentTransform = glm::mat4( 1 ) );
 		virtual Colour calcuatePrimitveLightAtPoint( Primitive& primitive, Vector3& intersectionPoint ) = 0; // Calucate Light Angle
-		//virtual Colour calcuatePrimitveLightAtPoint( GameObject& gameObject, Vector3& intersectionPoint ) = 0; // Calucate Light Angle
+
 		
     protected:
         GameObject * parent;
