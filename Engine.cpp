@@ -63,9 +63,9 @@ void Engine::build()
 	//floor.setPrimitive(new Plane(Material(Colour(0.0f, 0.0f, 0.2f), 1.0f, 1.0f, 0.2f), Vector3(0, 1, 0), 2.0f, false));
 	//mScene.add(floor);
 	
-	std::shared_ptr<GameObject> floor(new GameObject("Test", glm::vec3(-8.0f, 3.0f, 8.0f)));
+	std::unique_ptr<GameObject> floor(new GameObject("Floor", glm::vec3(-8.0f, 3.0f, 8.0f)));
 	floor->setPrimitive(new Plane(Material(Colour(0.0f, 0.0f, 0.2f), 1.0f, 1.0f, 0.2f), Vector3(0, 1, 0), 2.0f, false));
-	mScene.add(*floor);
+	mScene.add(floor.get());
 
 
 	// Create spehere
