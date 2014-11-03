@@ -18,8 +18,8 @@
 
 
 
-GameObject::GameObject(std::string aName, glm::vec3 aPosition) : 
-																name(aName), transform(glm::translate(glm::mat4(1.0f), aPosition)), 
+GameObject::GameObject(std::string name, Vector3 position) : 
+															mName(name), transform(glm::translate(glm::mat4(1.0f), glm::vec3(position.x,position.y,position.z))),
 																behaviour(nullptr), collider(nullptr), mesh(nullptr),
 																mLight(nullptr), ray(nullptr), mPrimitive(nullptr), children()
 {
@@ -66,7 +66,7 @@ void GameObject::rotate( float angle, glm::vec3 axis )
 
 const std::string GameObject::getName()
 {
-	return name;
+	return mName;
 }
 
 glm::vec3 GameObject::getLocation()
@@ -160,12 +160,6 @@ void GameObject::update( float step )
 {
 	if ( behaviour ) { // note no assert on behaviour, it is ok when there is no behaviour
 		behaviour->update( step );
-	}
-
-	float time = Time::now();
-
-	if (time - startTime >= 0.05f ) {
-		startTime = time;
 	}
 }
 

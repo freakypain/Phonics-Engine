@@ -1,7 +1,7 @@
 #ifndef LIGHT_H
 #define LIGHT_H
 
-#include "Vector3.hpp"
+#include "Math/Vector3.hpp"
 #include "GameObject.hpp"
 #include "Colour.hpp"
 #include "Renderer.hpp"

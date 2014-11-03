@@ -5,6 +5,7 @@
 
 #include "Scene.hpp"
 #include "RenderPoint.hpp"
+#include "Time.hpp"
 
 class Hud;
 class Renderer;
@@ -20,8 +21,10 @@ class Engine
 		Hud * hud;
 		Renderer * renderer;
 		Scene mScene;
+		Time mTime;
 		Camera * camera;
 		Light * light;
+		
 		bool running;
 
 	public: // functions

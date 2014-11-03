@@ -1,5 +1,5 @@
 #include "Sphere.hpp"
-#include "../Vector3.hpp"
+#include "../Math/Vector3.hpp"
 
 
 Sphere::Sphere( Material material, Vector3& center, float radius, bool shadow = true ) 

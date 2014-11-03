@@ -18,22 +18,8 @@ class Light;
 
 class GameObject
 {
-	protected:
-		std::string name;
-		glm::mat4 transform;
-		Behaviour * behaviour;
-		Collider * collider;
-		Mesh * mesh;
-        Light * mLight;
-		Ray * ray;
-		Primitive * mPrimitive;
-        float startTime;
-        bool adding;
-
-		std::vector<GameObject*> children;
-
 	public:
-		GameObject( std::string aName = "", glm::vec3 aPosition = glm::vec3( 0.0f, 0.0f, 0.0f ));
+		GameObject( std::string mName = "", Vector3 position = Vector3( 0.0f, 0.0f, 0.0f ));
 		//GameObject(std::string name = NULL, Vector3 position = Vector3( 0.0f, 0.0f, 0.0f ));
 
 		virtual ~GameObject();
@@ -74,6 +60,20 @@ class GameObject
 //		void draw( );
 
 		void add( GameObject * child );
+
+	protected:
+		std::string mName;
+		glm::mat4 transform;
+		Behaviour * behaviour;
+		Collider * collider;
+		Mesh * mesh;
+		Light * mLight;
+		Ray * ray;
+		Primitive * mPrimitive;
+		float startTime;
+		bool adding;
+		std::vector<GameObject*> children;
+
 };
 
 #endif // GAMEOBJECT_H

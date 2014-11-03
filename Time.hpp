@@ -4,20 +4,24 @@
 class Time
 {
 	private: // data members
-		//static sf::Clock clock;
-		//static float currentTime;
-		//static float deltaTime;
-		static double deltatime;
+		float mTime;		
+		float mCurrentTime;
+		float mDt;
+		float mAccumulator;
+		float mFps;		
+		float mStartTime;
+		int mFrames;
 
-	private: // disable creation of time object
-		//Time(){}
 
 	public: // functons
 		Time();
-		static void update();
-		static float now();
-		static float step();
-
+		~Time();		
+		void update();
+		float timer();
+		unsigned int calcFps(int dt, int currentTime);
+		float getTime();
+		float getStep();
+		unsigned int getFps();
 };
 
 #endif // TIME_H

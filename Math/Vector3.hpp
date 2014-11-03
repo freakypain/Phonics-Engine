@@ -1,8 +1,9 @@
 #ifndef VECTOR3_H
 #define VECTOR3_H
 
+#include "../Math.hpp"
 
-class Vector3{
+class Vector3 : public Math {
 	public:
 		Vector3();
 		Vector3( float x, float y, float z );

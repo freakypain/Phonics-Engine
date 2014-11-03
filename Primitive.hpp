@@ -1,7 +1,7 @@
 #ifndef PRIMITIVE_H
 #define PRIMITIVE_H
 
-#include "Vector3.hpp"
+#include "Math/Vector3.hpp"
 #include "Ray.hpp"
 #include "Colour.hpp"
 #include "Material.hpp"

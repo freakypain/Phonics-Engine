@@ -1,5 +1,5 @@
 #include "PointLight.hpp"
-#include "../Vector3.hpp"
+#include "../Math/Vector3.hpp"
 
 PointLight::PointLight( Colour colour, Vector3 position )	: Light( LIGHT_POINT, colour ), mPosition( position ),	mAttenuationConstant( 0.0f ),	mAttenuationLinear( 1.0f ), mAttenuationQuadratic( 0.0f )
 {

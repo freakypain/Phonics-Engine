@@ -40,6 +40,12 @@
     <Filter Include="Source Files\Primitives">
       <UniqueIdentifier>{66c89e7d-6672-4bad-8c2a-2034a9d811a0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Math">
+      <UniqueIdentifier>{fff364ee-a0c8-4220-bd35-8627ba41a3a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Math">
+      <UniqueIdentifier>{b8781889-e717-465c-b8a1-77f238b4c162}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Behaviour.cpp">
@@ -87,9 +93,6 @@
     <ClCompile Include="RenderPoint.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Vector3.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Colour.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -113,6 +116,12 @@
     </ClCompile>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Math.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\Vector3.cpp">
+      <Filter>Source Files\Math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -164,9 +173,6 @@
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Vector3.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Colour.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -193,6 +199,12 @@
     </ClInclude>
     <ClInclude Include="Primitives\Plane.hpp">
       <Filter>Source Files\Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="Math.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Vector3.hpp">
+      <Filter>Header Files\Math</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

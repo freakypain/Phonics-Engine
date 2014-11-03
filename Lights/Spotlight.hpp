@@ -3,7 +3,8 @@
 
 #include "../Colour.hpp"
 #include "../Light.hpp"
-#include "../Vector3.hpp"
+#include "../Math/Vector3.hpp"
+
 
 
 class Spotlight : public Light{

@@ -96,6 +96,8 @@
     <ClCompile Include="Lights\Spotlight.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Material.cpp" />
+    <ClCompile Include="Math.cpp" />
+    <ClCompile Include="Math\Vector3.cpp" />
     <ClCompile Include="Primitive.cpp" />
     <ClCompile Include="Primitives\Plane.cpp" />
     <ClCompile Include="Primitives\Sphere.cpp" />
@@ -104,7 +106,6 @@
     <ClCompile Include="RenderPoint.cpp" />
     <ClCompile Include="Time.cpp" />
     <ClCompile Include="Scene.cpp" />
-    <ClCompile Include="Vector3.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Behaviour.hpp" />
@@ -123,6 +124,8 @@
     <ClInclude Include="Lights\Spotlight.hpp" />
     <ClInclude Include="Main.hpp" />
     <ClInclude Include="Material.hpp" />
+    <ClInclude Include="Math.hpp" />
+    <ClInclude Include="Math\Vector3.hpp" />
     <ClInclude Include="Primitive.hpp" />
     <ClInclude Include="Primitives\Plane.hpp" />
     <ClInclude Include="Primitives\Sphere.hpp" />
@@ -132,7 +135,6 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Time.hpp" />
     <ClInclude Include="Scene.hpp" />
-    <ClInclude Include="Vector3.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

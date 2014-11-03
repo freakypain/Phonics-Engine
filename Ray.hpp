@@ -1,14 +1,13 @@
 #ifndef RAY_H
 #define RAY_H
 
-#include "Vector3.hpp"
+#include "Math/Vector3.hpp"
 
 class Ray
 {
 	public:
 		Ray();
 		Ray( const Vector3& origin, const Vector3& direction );
-		//~Ray() = default;
 		~Ray();
 
 

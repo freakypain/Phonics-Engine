@@ -2,6 +2,7 @@
 #include <string>
 #include <gtc\matrix_transform.hpp>
 #include <glm.hpp>
+#include "Math\Vector3.hpp"
 
 #include "Camera.hpp"
 #include "Renderer.hpp"
@@ -10,12 +11,12 @@
 
 
 
-Camera::Camera( std::string name, glm::vec3 position ) : GameObject( name, position )
+Camera::Camera( std::string name, Vector3 position ) : GameObject( name, position )
 {
-	glm::vec3 eye = position;
-	glm::vec3 at( position.x, 0, position.z + 0.01 );
-	glm::vec3 up ( 0.0f, -1.0f, 0.0f );
-	transform = glm::inverse( glm::lookAt( eye, at, up ) );
+	Vector3 eye = position;
+	Vector3 at(position.x, 0, position.z + 0.01);
+	Vector3 up(0.0f, -1.0f, 0.0f);
+	//transform = glm::inverse( glm::lookAt( eye, at, up ) );
 	projection = glm::perspective(  60.0f, 4.0f/3.0f, 0.1f, 100.0f  );
 }
 

@@ -2,7 +2,7 @@
 #define SPHERE_H
 
 #include "../Primitive.hpp"
-#include "../Vector3.hpp"
+#include "../Math/Vector3.hpp"
 
 
 class Sphere : public Primitive{

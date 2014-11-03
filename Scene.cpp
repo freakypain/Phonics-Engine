@@ -19,36 +19,22 @@
 #include "Primitives\Plane.hpp"
 
 
-Scene::Scene(std::string aName) : GameObject(aName)
+Scene::Scene( std::string name ) : GameObject( name )
 {
-	//delete[] mPrimitives;
-	//delete[] mLights;
+
 }
 
 Scene::~Scene()
 {
 	//dtor
-
-	// Remove all objects from scene
-
 }
 
 // Update scene
 void Scene::update( float step )
 {
-	//camera->update( step );
-	GameObject::update( step );
+	GameObject::update( step ); // Update Behaviour
 	checkCollision(); // Check Collisions
 }
-
-// Draw Scene
-/*
-void Scene::draw( Renderer * renderer )
-{
-	assert( renderer != 0 );
-	GameObject::draw( renderer ); // draw children Engine Objects
-}*/
-
 
 
 // Return Number of primitives
@@ -85,6 +71,7 @@ Primitive* Scene::getFirstPrimitive(Ray& ray, float& distanceToIntersect) const
 }
 
 void Scene::prepare(){
+	// Loop through GameObjects
 	for ( std::vector< GameObject * >::iterator i = children.begin(); i != children.end(); ++i ){	
 		// Set lights
 		if ( ( (GameObject *)* i)->getLight() ) { 
@@ -110,6 +97,7 @@ Colour Scene::calcuatePrimiateLightingAtPoint( Primitive& primitive, Vector3& in
 		if (light->getType() == LIGHT_POINT)
 		{
 			Vector3 normal = primitive.getNormal( intersecPoint );
+		//	Vector3 normal = 
 			Vector3 toLight = ( (PointLight*)light )->getPosition() - intersecPoint;
 
 			// Normalize Light

@@ -15,7 +15,7 @@
 class Scene : public GameObject
 {
 	public:
-		Scene( std::string aName = "" );
+		Scene( std::string name = "" );
 		virtual ~Scene();
 
 		void update( float step );
