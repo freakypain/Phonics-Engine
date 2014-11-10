@@ -11,8 +11,6 @@
 #include "Camera.hpp"
 #include "Light.hpp"
 
-
-
 // Behaviour
 #include "Behaviours/WASDBehaviour.hpp"
 

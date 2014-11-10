@@ -22,15 +22,18 @@ class Vector3 : public Math {
 		bool	 operator == ( const Vector3& rhs );	// Equality check
 
 		// Public Methods
-		static float   dot( const Vector3& lhs, const Vector3& rhs );
+		static float dot( const Vector3& lhs, const Vector3& rhs );
 		static Vector3 cross( const Vector3& lhs, const Vector3& rhs );
-		static Vector3 normalize( const Vector3& vector );
+		//static Vector3 normalize( const Vector3& vector );
+		//static Vector3& normalize();
 		static Vector3 add( const Vector3& lhs, const Vector3& rhs );
 		static Vector3 subtract( const Vector3& lhs, const Vector3& rhs );
 		static Vector3 negate( const Vector3& vector );
+		static float distance( const Vector3& lhs, const Vector3& rhs );
+		
 
-		float length();
-		float length() const;
+		float length( );
+		bool isZero( );
 		void  normalize();
 
 		// XYZ components

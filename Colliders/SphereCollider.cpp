@@ -40,10 +40,14 @@ void drawSphere(){
 
 bool SphereCollider::collides( SphereCollider * otherCollider )
 {
-    glm::vec3 position = parent->getLocation();
-    glm::vec3 otherPosition = otherCollider->parent->getLocation();
+	Vector3 position = parent->getLocation();
+	Vector3 otherPosition = otherCollider->parent->getLocation();
+    //glm::vec3 position = parent->getLocation();
+    //glm::vec3 otherPosition = otherCollider->parent->getLocation();
 
-    float distance = glm::distance(position, otherPosition);
+	//float distance = Vector3::
+    //float distance = glm::distance(position, otherPosition);
+	float distance = Vector3::distance(position, otherPosition); // This is not the best way, but works for now
 
     if(distance < radius + otherCollider->radius){
             if(parent->getBehaviour() != 0){

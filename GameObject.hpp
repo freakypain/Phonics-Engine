@@ -30,7 +30,7 @@ class GameObject
 		glm::mat4 getTransform( );
 		const std::string getName( );
 		Collider * getCollider( );
-		glm::vec3 getLocation( );
+		Vector3 getLocation( );
 		glm::vec3 getDirection( );
 		bool hasCollider( );
 

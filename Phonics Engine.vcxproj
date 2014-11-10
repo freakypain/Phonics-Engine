@@ -97,6 +97,9 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Math.cpp" />
+    <ClCompile Include="Math\Matrix3.cpp" />
+    <ClCompile Include="Math\Matrix4.cpp" />
+    <ClCompile Include="Math\Quaternion.cpp" />
     <ClCompile Include="Math\Vector3.cpp" />
     <ClCompile Include="Primitive.cpp" />
     <ClCompile Include="Primitives\Plane.cpp" />
@@ -125,6 +128,9 @@
     <ClInclude Include="Main.hpp" />
     <ClInclude Include="Material.hpp" />
     <ClInclude Include="Math.hpp" />
+    <ClInclude Include="Math\Matrix3.hpp" />
+    <ClInclude Include="Math\Matrix4.hpp" />
+    <ClInclude Include="Math\Quaternion.hpp" />
     <ClInclude Include="Math\Vector3.hpp" />
     <ClInclude Include="Primitive.hpp" />
     <ClInclude Include="Primitives\Plane.hpp" />

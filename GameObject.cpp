@@ -69,9 +69,9 @@ const std::string GameObject::getName()
 	return mName;
 }
 
-glm::vec3 GameObject::getLocation()
+Vector3 GameObject::getLocation()
 {
-	return glm::vec3( transform[3][0], transform[3][1], transform[3][2] );
+	return Vector3( transform[3][0], transform[3][1], transform[3][2] );
 }
 
 // Return GameObjects
