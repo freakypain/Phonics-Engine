@@ -2,7 +2,7 @@
 #include <iostream>
 #include <cassert>
 #include <cmath>
-#include <glm.hpp>
+
 
 #include "SphereCollider.hpp"
 #include "../Behaviour.hpp"

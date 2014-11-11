@@ -1,8 +1,8 @@
 #include <iostream>
 #include <string>
-#include <gtc\matrix_transform.hpp>
-#include <glm.hpp>
+
 #include "Math\Vector3.hpp"
+#include "Math\Matrix4.hpp"
 
 #include "Camera.hpp"
 #include "Renderer.hpp"
@@ -16,8 +16,16 @@ Camera::Camera( std::string name, Vector3 position ) : GameObject( name, positio
 	Vector3 eye = position;
 	Vector3 at(position.x, 0, position.z + 0.01);
 	Vector3 up(0.0f, -1.0f, 0.0f);
+
+	// Test calculation
+	Matrix4 matrix;
+	mTransform = matrix.lookAt(eye, at, up);
+	mTransform = matrix.inverse();
+	mProjection = matrix.setPerspective(60.0f, 4.0f / 3.0f, 0.1f, 100.0f);
+		
+	
 	//transform = glm::inverse( glm::lookAt( eye, at, up ) );
-	projection = glm::perspective(  60.0f, 4.0f/3.0f, 0.1f, 100.0f  );
+	//projection = glm::perspective(  60.0f, 4.0f/3.0f, 0.1f, 100.0f  );
 }
 
 Camera::~Camera()

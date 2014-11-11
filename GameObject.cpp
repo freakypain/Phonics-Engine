@@ -1,4 +1,4 @@
-// Libs
+// Interanl
 #include "Renderer.hpp"
 #include "GameObject.hpp"
 #include "Behaviour.hpp"
@@ -7,21 +7,20 @@
 #include "Light.hpp"
 #include "Ray.hpp"
 
-// Temp
-#include "Camera.hpp"
+// (Internal) Math Libs
+#include "Math\Vector3.hpp"
+#include "Math\Matrix4.hpp" 
 
-// C++
+// External
 #include <vector>
-#include <glm.hpp>
-#include <gtc\matrix_transform.hpp>
-
+#include <cassert>
 
 
 
 GameObject::GameObject(std::string name, Vector3 position) : 
-															mName(name), transform(glm::translate(glm::mat4(1.0f), glm::vec3(position.x,position.y,position.z))),
-																behaviour(nullptr), collider(nullptr), mesh(nullptr),
-																mLight(nullptr), ray(nullptr), mPrimitive(nullptr), children()
+															mName(name), mTransform(), //transform(glm::translate(glm::mat4(1.0f),  //Vector3( position.x, position.y, position.z),
+															/*glm::vec3(position.x,position.y,position.z))),*/ behaviour(nullptr), collider(nullptr), 
+															mLight(nullptr), ray(nullptr), mPrimitive(nullptr), children()
 {
 
 }
@@ -32,35 +31,44 @@ GameObject::~GameObject()
 }
 
 
-void GameObject::translate(glm::vec3 translation)
+void GameObject::translate(Vector3 translation)
 {
+	//mTransform = Matrix4::translate()
+	//transform = glm::translate( transform, translation );
+
+}
+
+
+void GameObject::setTransform(Matrix4 aTransform)
+{
+    mTransform = aTransform;
+}
+
+// TODO need to have a look at this
+void GameObject::setLocation(Vector3 aLocation)
+{
+	Matrix4 matrix;
+	mTransform = matrix.translate(Vector3(aLocation.x, aLocation.y, aLocation.z));
 	
-	transform = glm::translate( transform, translation );
-
+	//mTransform = glm::translate(Vector3(mTransform[3][aLocation.x], mTransform[3][aLocation.y], mTransform[3][aLocation.z]));
 }
 
 
-void GameObject::setTransform(glm::mat4 aTransform)
+Vector3 GameObject::getDirection()
 {
-    transform = aTransform;
+	return Vector3(mTransform.data[0][0], mTransform.data[1][0], mTransform.data[2][0]); // z axis return
 }
 
-
-void GameObject::setLocation(glm::vec3 aLocation)
+// TODO: Need to have a look at this! 
+void GameObject::rotate( float angle, Vector3 axis )
 {
-	transform = glm::translate(transform, glm::vec3(transform[3][aLocation.x], transform[3][aLocation.y], transform[3][aLocation.z]));
-}
+	Matrix4 matrix;
+	matrix.identity(); // Lets give this one a try
 
+	const Vector3 transform = Vector3(mTransform.data[0][0], mTransform.data[1][0], mTransform.data[2][0]);
+	mTransform = matrix.rotate(angle, transform);
 
-glm::vec3 GameObject::getDirection()
-{
-    return glm::vec3(transform[2]); // z axis return
-}
-
-
-void GameObject::rotate( float angle, glm::vec3 axis )
-{
-	transform = glm::rotate( transform, angle, axis);
+	//mTransform = Matrix4::rotate(mTransform, angle, axis);
 }
 
 
@@ -69,9 +77,11 @@ const std::string GameObject::getName()
 	return mName;
 }
 
+//TODO Need to have a look at this
 Vector3 GameObject::getLocation()
 {
-	return Vector3( transform[3][0], transform[3][1], transform[3][2] );
+	return Vector3( mTransform.data[0][0], mTransform.data[1][0], mTransform.data[2][0]);
+	//return Vector3(mTransform[3][0], mTransform[3][1], mTransform[3][2]);
 }
 
 // Return GameObjects
@@ -118,17 +128,6 @@ Behaviour * GameObject::getBehaviour(){
 
 void GameObject::removeBehaviour(){
     behaviour = 0;
-}
-
-
-Mesh * GameObject::getMesh(){
-    return mesh;
-}
-
-void GameObject::setMesh( Mesh * aMesh )
-{
-	assert( aMesh != 0 );
-	mesh = aMesh;
 }
 
 void GameObject::setPrimitive(Primitive * primitive)
@@ -179,8 +178,8 @@ bool GameObject::intersect( Ray& ray, float& distance )
 }
 
 
-glm::mat4 GameObject::getTransform(){
-    return transform;
+Matrix4 GameObject::getTransform(){
+	return mTransform;
 }
 
 
@@ -201,7 +200,6 @@ void GameObject::removeChild( GameObject * child )
             {
                 ((GameObject *)*it)->removeCollider();
                 ((GameObject *)*it)->removeBehaviour();
-                ((GameObject *)*it)->setMesh(0);
             }
         }
     }

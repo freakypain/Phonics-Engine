@@ -1,13 +1,18 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
+// External
 #include <Windows.h>
 #include <gl\GL.h>
-#include <glm.hpp>
 
+// Internal
 #include "RenderPoint.hpp"
 #include "Ray.hpp"
 #include "Colour.hpp"
+
+// Math
+#include "Math\Matrix3.hpp"
+#include "Math\Vector3.hpp"
 
 class GameObject;
 class Scene;
@@ -27,11 +32,11 @@ class Renderer
 		bool draw( Scene&  scene );
 		//void draw(GameObject * aWorld); // starting point for drawing
 		//void draw(unsigned int size, GLuint indicesId, GLuint verticesId, GLuint normalsId, GLuint uvsId); // drawing mesh, all other uniforms etc should be allready available
-		void setProjection(glm::mat4 aProjection);
-		void setView(glm::mat4 aView);
-		void setModel(glm::mat4 aModel);
+		void setProjection(Matrix4 aProjection);
+		void setView(Matrix4 aView);
+		void setModel(Matrix4 aModel);
 		void setTime(float aTime);
-		void setLight(glm::vec3 aLight);
+		void setLight(Vector3 aLight);
 	
 
 	protected:
@@ -46,8 +51,8 @@ class Renderer
 		// buffered variables
 		float time;
 
-		glm::mat4 projection, view, model;
-		glm::vec3 light;	
+		Matrix4 projection, view, model;
+		Vector3 light;	
 
 		void findLocations();
 };

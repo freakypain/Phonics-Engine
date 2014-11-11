@@ -3,7 +3,7 @@
 #include <iostream>
 #include <glew.h>
 #include <gtc\type_ptr.hpp>
-#include <glm.hpp>
+
 
 // Internal
 #include "Renderer.hpp"
@@ -125,22 +125,22 @@ void Renderer::initialize()
 	mDeltaY = (mViewPlaneY2 - mViewPlaneY1) / mRenderTarget->getHeight();
 }
 
-void Renderer::setProjection( glm::mat4 aProjection )
+void Renderer::setProjection( Matrix4 aProjection )
 {
 	projection = aProjection; // cache P matrix
 }
 
-void Renderer::setView( glm::mat4 aView )
+void Renderer::setView( Matrix4 aView )
 {
 	view = aView; // cache V matrix
 }
 
-void Renderer::setModel( glm::mat4 aModel )
+void Renderer::setModel( Matrix4 aModel)
 {
 	model = aModel; // cache M matrix
 }
 
-void Renderer::setLight( glm::vec3 aLight )
+void Renderer::setLight( Vector3 aLight )
 {
 	light = aLight; // cache light prosition for positional light
 }

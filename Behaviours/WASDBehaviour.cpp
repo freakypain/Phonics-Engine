@@ -20,6 +20,7 @@ WASDBehaviour::~WASDBehaviour()
 
 void WASDBehaviour::update( float step )
 {
+	/*
 	if (GetAsyncKeyState('W'))
 	{
 		parent->translate(glm::vec3(0.0f, 0.0f, -step * 30));
@@ -36,7 +37,7 @@ void WASDBehaviour::update( float step )
 	else if (GetAsyncKeyState('D'))
 	{
 		parent->translate(glm::vec3(step * 60, 0.0f, 0.0f));
-	}
+	}*/
 
 
 	/*

@@ -1,16 +1,17 @@
 #ifndef GAMEOBJECT_H
 #define GAMEOBJECT_H
 
-#include <glm.hpp>
+// External
 #include <vector>
 #include "Primitive.hpp"
 
+// Internal
+#include "Math\Matrix4.hpp"
+#include "Math\Vector3.hpp"
 
-class Vector3;
-class Transform;
+
 class Collider;
 class Renderer;
-class Mesh;
 class Behaviour;
 class Light;
 class Ray;
@@ -24,14 +25,14 @@ class GameObject
 
 		virtual ~GameObject();
 
-		void translate( glm::vec3 translation );
-		void rotate( float angle, glm::vec3 axis );
+		void translate( Vector3 translation );
+		void rotate( float angle, Vector3 axis );
 
-		glm::mat4 getTransform( );
+		Matrix4 getTransform( );
 		const std::string getName( );
 		Collider * getCollider( );
 		Vector3 getLocation( );
-		glm::vec3 getDirection( );
+		Vector3 getDirection( );
 		bool hasCollider( );
 
 		void setBehaviour( Behaviour * aBehaviour );
@@ -41,11 +42,9 @@ class GameObject
 		void setCollider( Collider * aCollider );
 		void removeCollider();
 		void removeChild( GameObject * aChild );
-		void setTransform( glm::mat4 aTransform );
-		void setLocation( glm::vec3 aLocation );
-		void setMesh( Mesh * aMesh );
+		void setTransform( Matrix4 aTransform );
+		void setLocation( Vector3 aLocation );
 		void setPrimitive( Primitive * primitive );
-		Mesh * getMesh();
 		Primitive * getPrimitive();
 		std::vector<GameObject*> getGameObjects();
 		void makeQuad(int width, int height);
@@ -63,10 +62,10 @@ class GameObject
 
 	protected:
 		std::string mName;
-		glm::mat4 transform;
+		//glm::mat4 transform;
+		Matrix4 mTransform;
 		Behaviour * behaviour;
 		Collider * collider;
-		Mesh * mesh;
 		Light * mLight;
 		Ray * ray;
 		Primitive * mPrimitive;
